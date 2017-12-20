@@ -1,0 +1,6 @@
+name: Capture_The_Flag
+version: 2.2
+main: ctf.Main
+commands:
+  ctf:
+    description: Capture the flag base command.
