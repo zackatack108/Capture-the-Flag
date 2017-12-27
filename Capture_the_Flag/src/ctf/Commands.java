@@ -53,6 +53,7 @@ public class Commands implements CommandExecutor{
 						boolean inGame = false;
 
 						if(args.length == 2){
+							
 							int arenaNum = data.getArenaNum(args[1].toLowerCase());
 
 							for(int count = 0; count < data.getArena(arenaNum).getInGameCount(); count++){
@@ -497,50 +498,32 @@ public class Commands implements CommandExecutor{
 
 				case "add":
 
-					if(args.length == 2){
+					if(args[1].equalsIgnoreCase("spawn")){
 
-						if(args[1].equalsIgnoreCase("spawn")){
+						//check if player has permission to add a spawn
+						if(player.hasPermission("ctf.add.spawn")){
 
-							//check if player has permission to add a spawn
-							if(player.hasPermission("ctf.add.spawn")){
+							//check if arena name exist in the config
+							if(config.contains("Arenas." + args[2].toLowerCase())){
 
-								if(args.length == 3){
+								if(args.length == 4){
 
-									//check if arena name exist in the config
-									if(config.contains("Arenas." + args[2].toLowerCase())){
+									if(args[3].equalsIgnoreCase("red")){ //check if player is setting spawn for team red
 
-										if(args.length == 4){
+										data.setRedSpawn(args[2].toLowerCase(), player);
+										player.sendMessage(ChatColor.GREEN + "Spawn point created for red team");
 
+									} else if(args[3].equalsIgnoreCase("blue")){ //check if player is setting spawn for team blue
 
-											if(args[3].equalsIgnoreCase("red")){ //check if player is setting spawn for team red
-
-												data.setRedSpawn(args[1].toLowerCase(), player);
-												player.sendMessage(ChatColor.GREEN + "Spawn point created for red team");
-
-											} else if(args[3].equalsIgnoreCase("blue")){ //check if player is setting spawn for team blue
-
-												data.setBlueSpawn(args[1].toLowerCase(), player);
-												player.sendMessage(ChatColor.GREEN + "Spawn point created for blue team");
-
-											} else {
-
-												//send error message to player
-												player.sendMessage(invalidTeam);
-
-												break;
-
-											}
-
-										} else {
-
-											//display error message to user
-											player.sendMessage(missingComponent);
-										}
+										data.setBlueSpawn(args[2].toLowerCase(), player);
+										player.sendMessage(ChatColor.GREEN + "Spawn point created for blue team");
 
 									} else {
 
-										//display error message to user
-										player.sendMessage(missingName);
+										//send error message to player
+										player.sendMessage(invalidTeam);
+
+										break;
 
 									}
 
@@ -548,148 +531,141 @@ public class Commands implements CommandExecutor{
 
 									//display error message to user
 									player.sendMessage(missingComponent);
-									player.sendMessage(helpMsg);
-
 								}
 
 							} else {
 
 								//display error message to user
-								player.sendMessage(noPermission);
-								player.sendMessage(systemAdmin);
-
-							}
-
-						} else if (args[1].equalsIgnoreCase("flag")){
-
-							//check if player has permission to add a flag
-							if(player.hasPermission("ctf.add.flag")){
-
-								if(args.length == 3){
-
-									//check if the arena name exist in the config
-									if(config.contains("Arenas." + args[2].toLowerCase())){
-
-										if(args.length == 4){
-
-											//Check to see what team the user selected
-											if(args[3].equalsIgnoreCase("red")){
-
-												flag.setRedFlag(args[2].toLowerCase(), player);
-												player.sendMessage(ChatColor.GREEN + "Flag created for red team");
-
-											} else if (args[3].equalsIgnoreCase("blue")){
-
-												flag.setBlueFlag(args[2].toLowerCase(), player);
-												player.sendMessage(ChatColor.GREEN + "Flag created for blue team");
-
-											} else {
-
-												//display error message to user
-												player.sendMessage(invalidTeam);
-
-												break;
-
-											}											
-
-										} else {
-
-											//display error message to user
-											player.sendMessage(missingComponent);
-										}
-
-									} else {
-
-										//display error message to user
-										player.sendMessage(missingName);
-
-									}
-
-								} else {
-
-									//display error message to user
-									player.sendMessage(missingComponent);
-									player.sendMessage(helpMsg);
-
-								}
-
-							} else {
-
-								//display error message to user
-								player.sendMessage(noPermission);
-								player.sendMessage(systemAdmin);
-
-							}
-
-						} else if (args[1].equalsIgnoreCase("lobby")){
-
-							//check if player has permission to add a lobby
-							if(player.hasPermission("ctf.add.lobby")){
-
-								if(args.length == 3){
-
-									//check if arena name exist in config
-									if(config.contains("Arenas." + args[2].toLowerCase())){
-
-										data.setLobby(args[2].toLowerCase(), player);
-										player.sendMessage(ChatColor.GREEN + "Lobby created for " + args[2].toLowerCase() + " arena");
-
-									} else {
-
-										//display error message to user
-										player.sendMessage(missingName);
-
-									}
-
-								} else {
-
-									//display error message to user
-									player.sendMessage(missingComponent);
-									player.sendMessage(helpMsg);
-
-								}
-
-							} else {
-
-								//display error message to user
-								player.sendMessage(noPermission);
-								player.sendMessage(systemAdmin);
-
-							}
-
-						} else if (args[1].equalsIgnoreCase("hub")){
-
-							//check if player has permission to add a hub
-							if(player.hasPermission("ctf.add.hub")){
-
-								if(args.length == 2){
-
-									data.setHub(player);
-									player.sendMessage(ChatColor.GREEN + "Hub created");
-
-								} else {
-
-									//display error message to user
-									player.sendMessage(missingComponent);
-									player.sendMessage(helpMsg);
-
-								}
-
-							} else {
-
-								//display error message to user
-								player.sendMessage(noPermission);
-								player.sendMessage(systemAdmin);
+								player.sendMessage(missingName);
 
 							}
 
 						} else {
 
 							//display error message to user
-							player.sendMessage(missingComponent);
-							player.sendMessage(helpMsg);
+							player.sendMessage(noPermission);
+							player.sendMessage(systemAdmin);
 
 						}
+
+					} else if (args[1].equalsIgnoreCase("flag")){
+
+						//check if player has permission to add a flag
+						if(player.hasPermission("ctf.add.flag")){
+
+							//check if the arena name exist in the config
+							if(config.contains("Arenas." + args[2].toLowerCase())){
+
+								if(args.length == 4){
+
+									//Check to see what team the user selected
+									if(args[3].equalsIgnoreCase("red")){
+
+										flag.setRedFlag(args[2].toLowerCase(), player);
+										player.sendMessage(ChatColor.GREEN + "Flag created for red team");
+
+									} else if (args[3].equalsIgnoreCase("blue")){
+
+										flag.setBlueFlag(args[2].toLowerCase(), player);
+										player.sendMessage(ChatColor.GREEN + "Flag created for blue team");
+
+									} else {
+
+										//display error message to user
+										player.sendMessage(invalidTeam);
+
+										break;
+
+									}											
+
+								} else {
+
+									//display error message to user
+									player.sendMessage(missingComponent);
+								}
+
+							} else {
+
+								//display error message to user
+								player.sendMessage(missingName);
+
+							}
+
+						} else {
+
+							//display error message to user
+							player.sendMessage(noPermission);
+							player.sendMessage(systemAdmin);
+
+						}
+
+					} else if (args[1].equalsIgnoreCase("lobby")){
+
+						//check if player has permission to add a lobby
+						if(player.hasPermission("ctf.add.lobby")){
+
+							if(args.length == 3){
+
+								//check if arena name exist in config
+								if(config.contains("Arenas." + args[2].toLowerCase())){
+
+									data.setLobby(args[2].toLowerCase(), player);
+									player.sendMessage(ChatColor.GREEN + "Lobby created for " + args[2].toLowerCase() + " arena");
+
+								} else {
+
+									//display error message to user
+									player.sendMessage(missingName);
+
+								}
+
+							} else {
+
+								//display error message to user
+								player.sendMessage(missingComponent);
+								player.sendMessage(helpMsg);
+
+							}
+
+						} else {
+
+							//display error message to user
+							player.sendMessage(noPermission);
+							player.sendMessage(systemAdmin);
+
+						}
+
+					} else if (args[1].equalsIgnoreCase("hub")){
+
+						//check if player has permission to add a hub
+						if(player.hasPermission("ctf.add.hub")){
+
+							if(args.length == 2){
+
+								data.setHub(player);
+								player.sendMessage(ChatColor.GREEN + "Hub created");
+
+							} else {
+
+								//display error message to user
+								player.sendMessage(missingComponent);
+								player.sendMessage(helpMsg);
+
+							}
+
+						} else {
+
+							//display error message to user
+							player.sendMessage(noPermission);
+							player.sendMessage(systemAdmin);
+
+						}
+
+					} else {
+
+						//display error message to user
+						player.sendMessage(missingComponent);
+						player.sendMessage(helpMsg);
 
 					}
 
@@ -697,233 +673,193 @@ public class Commands implements CommandExecutor{
 
 				case "remove":
 
-					if(args.length == 2){
+					if(args[1].equalsIgnoreCase("spawn")){
 
-						if(args[1].equalsIgnoreCase("spawn")){
+						//check if player has permission to remove spawn
+						if(player.hasPermission("ctf.remove.spawn")){
 
-							//check if player has permission to remove spawn
-							if(player.hasPermission("ctf.remove.spawn")){
+							//check if config contains arena name
+							if(config.contains("Arenas." + args[2].toLowerCase())){
 
-								if(args.length == 3){
+								if(args.length == 4){
 
-									//check if config contains arena name
-									if(config.contains("Arenas." + args[2].toLowerCase())){
+									//Check to see what team the user selected
+									if(args[3].equalsIgnoreCase("red")){
 
-										if(args.length == 4){
+										//Set team to red
+										team = "Red";
 
-											//Check to see what team the user selected
-											if(args[3].equalsIgnoreCase("red")){
+									} else if (args[3].equalsIgnoreCase("blue")){
 
-												//Set team to red
-												team = "Red";
-
-											} else if (args[3].equalsIgnoreCase("blue")){
-
-												//set team to blue
-												team = "Blue";
-
-											} else {
-
-												//display error message to user
-												player.sendMessage(invalidTeam);
-
-												break;
-
-											}
-
-											//Display message to user
-											player.sendMessage(ChatColor.GREEN + "Spawn removed for " + team + " team");
-
-											//remove spawn from config
-											config.set("Arenas." + args[2].toLowerCase() + "." + team + ".Spawn", null);
-											main.saveConfig();
-
-										} else {
-
-											//display error message to user
-											player.sendMessage(missingComponent);
-										}
+										//set team to blue
+										team = "Blue";
 
 									} else {
 
 										//display error message to user
-										player.sendMessage(missingName);
+										player.sendMessage(invalidTeam);
+
+										break;
 
 									}
 
-								} else {
+									//Display message to user
+									player.sendMessage(ChatColor.GREEN + "Spawn removed for " + team + " team");
 
-									//display error message to user
-									player.sendMessage(missingComponent);
-									player.sendMessage(helpMsg);
-
-								}
-
-							} else {
-
-								//display error message to user
-								player.sendMessage(noPermission);
-								player.sendMessage(systemAdmin);
-
-							}
-
-						} else if (args[1].equalsIgnoreCase("flag")){
-
-							//check if player has permission to remove the flag
-							if(player.hasPermission("ctf.remove.flag")){
-
-								if(args.length == 3){
-
-									//check if the arean exist in the config
-									if(config.contains("Arenas." + args[2].toLowerCase())){
-
-										if(args.length == 4){
-
-											//Check to see what team the user selected
-											if(args[3].equalsIgnoreCase("red")){
-
-												//remove team red flag
-												team = "Red";
-
-											} else if (args[3].equalsIgnoreCase("blue")){
-
-												//remove team blue flag
-												team = "Blue";
-
-											} else {
-
-												//display error message to user
-												player.sendMessage(invalidTeam);
-
-												break;
-
-											}
-
-											//Display message to user
-											player.sendMessage(ChatColor.GREEN + "Flag removed for " + team + " team");
-
-											//remove flag from config
-											config.set("Arenas." + args[2].toLowerCase() + "." + team + ".Flag", null);
-											main.saveConfig();
-
-										} else {
-
-											//display error message to user
-											player.sendMessage(missingComponent);
-										}
-
-									} else {
-
-										//display error message to user
-										player.sendMessage(missingName);
-
-									}
-
-								} else {
-
-									//display error message to user
-									player.sendMessage(missingComponent);
-									player.sendMessage(helpMsg);
-
-								}
-
-							} else {
-
-								//display error message to user
-								player.sendMessage(noPermission);
-								player.sendMessage(systemAdmin);
-
-							}
-
-						} else if (args[1].equalsIgnoreCase("lobby")){
-
-							//check if player has permission to remove the lobby
-							if(player.hasPermission("ctf.remove.lobby")){
-
-								if(args.length == 3){
-
-									//check if the arena exist in the config
-									if(config.contains("Arenas." + args[2].toLowerCase())){
-
-										if(args.length == 4){
-
-											//Display message to user
-											player.sendMessage(ChatColor.GREEN + "Lobby removed from " + args[2].toLowerCase() + " arena");
-
-											//Remove lobby from config
-											config.set("Arenas." + args[2].toLowerCase() +".Lobby", null);
-											main.saveConfig();
-
-										} else {
-
-											//display error message to user
-											player.sendMessage(missingComponent);
-										}
-
-									} else {
-
-										//display error message to user
-										player.sendMessage(missingName);
-
-									}
-
-								} else {
-
-									//display error message to user
-									player.sendMessage(missingComponent);
-									player.sendMessage(helpMsg);
-
-								}
-
-							} else {
-
-								//display error message to user
-								player.sendMessage(noPermission);
-								player.sendMessage(systemAdmin);
-
-							}
-
-						} else if (args[1].equalsIgnoreCase("hub")){
-
-							//check to see if player has permission to remove the hub
-							if(player.hasPermission("ctf.remove.hub")){
-
-								if(args.length == 2){
-
-									//Save spawnpoint to config
-									config.set("Hub", null);
+									//remove spawn from config
+									config.set("Arenas." + args[2].toLowerCase() + "." + team + ".Spawn", null);
 									main.saveConfig();
-									player.sendMessage(ChatColor.RED + "Hub removed");
 
 								} else {
 
 									//display error message to user
 									player.sendMessage(missingComponent);
-									player.sendMessage(helpMsg);
-
 								}
 
 							} else {
 
 								//display error message to user
-								player.sendMessage(noPermission);
-								player.sendMessage(systemAdmin);
+								player.sendMessage(missingName);
 
 							}
 
 						} else {
 
 							//display error message to user
-							player.sendMessage(missingComponent);
-							player.sendMessage(helpMsg);
+							player.sendMessage(noPermission);
+							player.sendMessage(systemAdmin);
 
 						}
 
-					}
+					} else if (args[1].equalsIgnoreCase("flag")){
 
-					if(args.length == 1){
+						//check if player has permission to remove the flag
+						if(player.hasPermission("ctf.remove.flag")){
 
-						
+							//check if the arean exist in the config
+							if(config.contains("Arenas." + args[2].toLowerCase())){
+
+								if(args.length == 4){
+
+									//Check to see what team the user selected
+									if(args[3].equalsIgnoreCase("red")){
+
+										//remove team red flag
+										team = "Red";
+
+									} else if (args[3].equalsIgnoreCase("blue")){
+
+										//remove team blue flag
+										team = "Blue";
+
+									} else {
+
+										//display error message to user
+										player.sendMessage(invalidTeam);
+
+										break;
+
+									}
+
+									//Display message to user
+									player.sendMessage(ChatColor.GREEN + "Flag removed for " + team + " team");
+
+									//remove flag from config
+									config.set("Arenas." + args[2].toLowerCase() + "." + team + ".Flag", null);
+									main.saveConfig();
+
+								} else {
+
+									//display error message to user
+									player.sendMessage(missingComponent);
+								}
+
+							} else {
+
+								//display error message to user
+								player.sendMessage(missingName);
+
+							}
+
+						} else {
+
+							//display error message to user
+							player.sendMessage(noPermission);
+							player.sendMessage(systemAdmin);
+
+						}
+
+					} else if (args[1].equalsIgnoreCase("lobby")){
+
+						//check if player has permission to remove the lobby
+						if(player.hasPermission("ctf.remove.lobby")){
+
+							//check if the arena exist in the config
+							if(config.contains("Arenas." + args[2].toLowerCase())){
+
+								if(args.length == 3){
+
+									//Display message to user
+									player.sendMessage(ChatColor.GREEN + "Lobby removed from " + args[2].toLowerCase() + " arena");
+
+									//Remove lobby from config
+									config.set("Arenas." + args[2].toLowerCase() +".Lobby", null);
+									main.saveConfig();
+
+								} else {
+
+									//display error message to user
+									player.sendMessage(missingComponent);
+								}
+
+							} else {
+
+								//display error message to user
+								player.sendMessage(missingName);
+
+							}
+
+						} else {
+
+							//display error message to user
+							player.sendMessage(noPermission);
+							player.sendMessage(systemAdmin);
+
+						}
+
+					} else if (args[1].equalsIgnoreCase("hub")){
+
+						//check to see if player has permission to remove the hub
+						if(player.hasPermission("ctf.remove.hub")){
+
+							if(args.length == 2){
+
+								//Save spawnpoint to config
+								config.set("Hub", null);
+								main.saveConfig();
+								player.sendMessage(ChatColor.RED + "Hub removed");
+
+							} else {
+
+								//display error message to user
+								player.sendMessage(missingComponent);
+								player.sendMessage(helpMsg);
+
+							}
+
+						} else {
+
+							//display error message to user
+							player.sendMessage(noPermission);
+							player.sendMessage(systemAdmin);
+
+						}
+
+					} else {
+
+						//display error message to user
+						player.sendMessage(missingComponent);
+						player.sendMessage(helpMsg);
 
 					}
 

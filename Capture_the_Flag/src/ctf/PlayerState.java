@@ -25,7 +25,7 @@ public class PlayerState {
 		state = config.getString("Arenas." + arenaName + ".State");
 
 		//check if the arena has a lobby
-		if(config.getString("Arenas." + arenaName + ".Lobby") == null){
+		if(config.getString("Arenas." + arenaName + ".Lobby.World") == null){
 
 			//tell user that the lobby doesn't exist
 			player.sendMessage(ChatColor.RED + "Sorry, a lobby doesn't exist for that arena");
