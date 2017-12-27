@@ -46,9 +46,6 @@ public class Listeners implements Listener{
 
 			int arenaNum = data.getArenaNum(arenaName);
 
-			boolean redTaken = data.getArena(arenaNum).getRedTaken();
-			boolean blueTaken = data.getArena(arenaNum).getBlueTaken();
-
 			for(int subscript = 0; subscript < data.getArena(arenaNum).getInGameCount(); subscript++){
 
 				if(player.getUniqueId().toString().equals(data.getArena(arenaNum).getInGame(subscript)))
@@ -56,6 +53,9 @@ public class Listeners implements Listener{
 
 				if(inGame == true && (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK) && event.getClickedBlock().getState() instanceof Banner){
 
+					boolean redTaken = data.getArena(arenaNum).getRedTaken();
+					boolean blueTaken = data.getArena(arenaNum).getBlueTaken();
+					
 					if(player.getUniqueId().toString().equals(data.getArena(arenaNum).getRedTeam(subscript))){ //check to see if player is on red team
 
 						if(blueTaken == true){
@@ -228,29 +228,34 @@ public class Listeners implements Listener{
 
 		Player player = event.getPlayer();
 
+		//cycle through the arena list
 		for(String arenaName: main.getConfig().getConfigurationSection("Arenas").getKeys(false)){
 
+			//get arena number
 			int arenaNum = data.getArenaNum(arenaName);
 
-			boolean redTaken = data.getArena(arenaNum).getRedTaken();
-			boolean blueTaken = data.getArena(arenaNum).getBlueTaken();
-
 			for(int subscript = 0; subscript < data.getArena(arenaNum).getInGameCount(); subscript++){
-
+				
+				//check to see if the player is in a game
 				if(player.getUniqueId().toString().equals(data.getArena(arenaNum).getInGame(subscript)))
 					inGame = true;
 
+				//player is in game
 				if(inGame == true){
+					
+					boolean redTaken = data.getArena(arenaNum).getRedTaken();
+					boolean blueTaken = data.getArena(arenaNum).getBlueTaken();
 
 					if(player.getUniqueId().toString().equals(data.getArena(arenaNum).getRedTeam(subscript)) 
 							&& player.getUniqueId().toString().equals(data.getArena(arenaNum).getRedHas())){ //check to see if player is on red team
 
+						//check to see if the flag is missing
 						if(redTaken == true && player.getUniqueId().toString().equals(data.getArena(arenaNum).getRedHas())
 								&& player.getLocation().getBlock().equals(flagLocation.redFlagSpawn(arenaName).getBlock())){
 
 							player.sendMessage(ChatColor.YELLOW + "You can't score if your flag is missing");
 
-						} else {
+						} else { //score the flag
 
 							if(player.getLocation().getBlock().equals(flagLocation.redFlagSpawn(arenaName).getBlock())){
 
@@ -275,12 +280,13 @@ public class Listeners implements Listener{
 					} else if(player.getUniqueId().toString().equals(data.getArena(arenaNum).getBlueTeam(subscript))
 							&& player.getUniqueId().toString().equals(data.getArena(arenaNum).getBlueHas())){ //check to see if player is on blue team
 
+						//check to see if the flag is missing
 						if(blueTaken == true && player.getUniqueId().toString().equals(data.getArena(arenaNum).getBlueHas())
 								&& player.getLocation().getBlock().equals(flagLocation.blueFlagSpawn(arenaName).getBlock())){
 
 							player.sendMessage(ChatColor.YELLOW + "You can't score if your flag is missing");
 
-						} else {
+						} else { //score the flag
 
 							if(player.getLocation().getBlock().equals(flagLocation.blueFlagSpawn(arenaName).getBlock())){
 
@@ -324,15 +330,15 @@ public class Listeners implements Listener{
 
 				int arenaNum = data.getArenaNum(arenaName);
 
-				boolean redTaken = data.getArena(arenaNum).getRedTaken();
-				boolean blueTaken = data.getArena(arenaNum).getBlueTaken();
-
 				for(int subscript = 0; subscript < data.getArena(arenaNum).getInGameCount(); subscript++){
 
 					if(player.getUniqueId().toString().equals(data.getArena(arenaNum).getInGame(subscript)))
 						inGame = true;
 					
 					if(inGame == true){
+						
+						boolean redTaken = data.getArena(arenaNum).getRedTaken();
+						boolean blueTaken = data.getArena(arenaNum).getBlueTaken();
 
 						if(subscript < data.getArena(arenaNum).getRedTeamCount() && player.getUniqueId().toString().equals(data.getArena(arenaNum).getRedTeam(subscript))){ //check to see if player is on red team
 
@@ -377,9 +383,7 @@ public class Listeners implements Listener{
 
 							onRespawn(player);
 
-						}
-						
-												
+						}												
 					}
 				} 
 			}
