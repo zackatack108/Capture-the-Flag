@@ -27,6 +27,7 @@ public class Main extends JavaPlugin {
 		//register listeners
 		getServer().getPluginManager().registerEvents(new Listeners(), this);
 		getServer().getPluginManager().registerEvents(new SignListener(), this);
+		getServer().getPluginManager().registerEvents(new FriendlyFire(), this);
 	}
 
 	public void onDisable(){

@@ -151,7 +151,7 @@ public class ArenaState {
 
 			playerID = UUID.fromString(data.getArena(arenaNum).getInGame(count));
 			player = Bukkit.getPlayer(playerID);
-
+			
 			if(count%2 == 0){
 				player.teleport(data.getRedSpawn(arenaName));
 				data.getArena(arenaNum).setRedTeam(player);
