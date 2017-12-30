@@ -1,6 +1,7 @@
 package ctf;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -11,11 +12,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -74,11 +78,33 @@ public class Listeners implements Listener{
 								if(banner.getBaseColor().equals(DyeColor.BLUE)){
 
 									ItemStack blueFlag = new ItemStack(Material.BANNER);
-									blueFlag.setDurability((short) 4);								
+									blueFlag.setDurability((short) 4);
+									
+									//create colored armor for red
+									ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
+									ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS);
+									ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
+									
+									LeatherArmorMeta chest = (LeatherArmorMeta) chestplate.getItemMeta();
+									LeatherArmorMeta legs = (LeatherArmorMeta) leggings.getItemMeta();
+									LeatherArmorMeta feet = (LeatherArmorMeta) boots.getItemMeta();
+									
+									chest.setColor(Color.RED);
+									legs.setColor(Color.RED);
+									feet.setColor(Color.RED);
+									
+									chestplate.setItemMeta(chest);
+									leggings.setItemMeta(legs);
+									boots.setItemMeta(feet);
+									
+									ItemStack ironSword = new ItemStack(Material.IRON_SWORD, 1);
 
 									player.getInventory().clear();
-									player.getInventory().setHelmet(blueFlag);
-									player.getInventory().setItemInMainHand(blueFlag);					
+									player.getInventory().setHelmet(blueFlag);		
+									player.getInventory().setChestplate(chestplate);
+									player.getInventory().setLeggings(leggings);
+									player.getInventory().setBoots(boots);
+									player.getInventory().addItem(ironSword);
 
 									block = flagLocation.blueDroppedLocation(arenaName).getBlock();	
 									block.setType(Material.AIR);
@@ -115,9 +141,31 @@ public class Listeners implements Listener{
 									ItemStack blueFlag = new ItemStack(Material.BANNER);
 									blueFlag.setDurability((short) 4);								
 
+									//create colored armor for red
+									ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
+									ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS);
+									ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
+									
+									LeatherArmorMeta chest = (LeatherArmorMeta) chestplate.getItemMeta();
+									LeatherArmorMeta legs = (LeatherArmorMeta) leggings.getItemMeta();
+									LeatherArmorMeta feet = (LeatherArmorMeta) boots.getItemMeta();
+									
+									chest.setColor(Color.RED);
+									legs.setColor(Color.RED);
+									feet.setColor(Color.RED);
+									
+									chestplate.setItemMeta(chest);
+									leggings.setItemMeta(legs);
+									boots.setItemMeta(feet);
+									
+									ItemStack ironSword = new ItemStack(Material.IRON_SWORD, 1);
+
 									player.getInventory().clear();
-									player.getInventory().setHelmet(blueFlag);
-									player.getInventory().setItemInMainHand(blueFlag);					
+									player.getInventory().setHelmet(blueFlag);		
+									player.getInventory().setChestplate(chestplate);
+									player.getInventory().setLeggings(leggings);
+									player.getInventory().setBoots(boots);
+									player.getInventory().addItem(ironSword);				
 
 									block = flagLocation.blueFlagSpawn(arenaName).getBlock();	
 									block.setType(Material.AIR);
@@ -154,9 +202,31 @@ public class Listeners implements Listener{
 									ItemStack redFlag = new ItemStack(Material.BANNER);
 									redFlag.setDurability((short) 1);								
 
+									//create colored armor for blue
+									ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
+									ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS);
+									ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
+									
+									LeatherArmorMeta chest = (LeatherArmorMeta) chestplate.getItemMeta();
+									LeatherArmorMeta legs = (LeatherArmorMeta) leggings.getItemMeta();
+									LeatherArmorMeta feet = (LeatherArmorMeta) boots.getItemMeta();
+									
+									chest.setColor(Color.BLUE);
+									legs.setColor(Color.BLUE);
+									feet.setColor(Color.BLUE);
+									
+									chestplate.setItemMeta(chest);
+									leggings.setItemMeta(legs);
+									boots.setItemMeta(feet);
+									
+									ItemStack ironSword = new ItemStack(Material.IRON_SWORD, 1);
+
 									player.getInventory().clear();
-									player.getInventory().setHelmet(redFlag);
-									player.getInventory().setItemInMainHand(redFlag);					
+									player.getInventory().setHelmet(redFlag);		
+									player.getInventory().setChestplate(chestplate);
+									player.getInventory().setLeggings(leggings);
+									player.getInventory().setBoots(boots);
+									player.getInventory().addItem(ironSword);				
 
 									block = flagLocation.redDroppedLocation(arenaName).getBlock();	
 									block.setType(Material.AIR);
@@ -194,9 +264,31 @@ public class Listeners implements Listener{
 									ItemStack redFlag = new ItemStack(Material.BANNER);
 									redFlag.setDurability((short) 1);								
 
+									//create colored armor for blue
+									ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
+									ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS);
+									ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
+									
+									LeatherArmorMeta chest = (LeatherArmorMeta) chestplate.getItemMeta();
+									LeatherArmorMeta legs = (LeatherArmorMeta) leggings.getItemMeta();
+									LeatherArmorMeta feet = (LeatherArmorMeta) boots.getItemMeta();
+									
+									chest.setColor(Color.BLUE);
+									legs.setColor(Color.BLUE);
+									feet.setColor(Color.BLUE);
+									
+									chestplate.setItemMeta(chest);
+									leggings.setItemMeta(legs);
+									boots.setItemMeta(feet);
+									
+									ItemStack ironSword = new ItemStack(Material.IRON_SWORD, 1);
+
 									player.getInventory().clear();
-									player.getInventory().setHelmet(redFlag);
-									player.getInventory().setItemInMainHand(redFlag);					
+									player.getInventory().setHelmet(redFlag);		
+									player.getInventory().setChestplate(chestplate);
+									player.getInventory().setLeggings(leggings);
+									player.getInventory().setBoots(boots);
+									player.getInventory().addItem(ironSword);					
 
 									block = flagLocation.redFlagSpawn(arenaName).getBlock();	
 									block.setType(Material.AIR);
@@ -372,7 +464,7 @@ public class Listeners implements Listener{
 
 								data.getArena(arenaNum).setBlueHas(null);
 
-								data.getArena(arenaNum).setFlagMsg(ChatColor.BLUE + "Red flag has been dropped");
+								data.getArena(arenaNum).setFlagMsg(ChatColor.RED + "Red flag has been dropped");
 								playerList.getPlayer(arenaName, Message.FLAG);
 							}
 							
@@ -531,4 +623,46 @@ public class Listeners implements Listener{
 
 	}
 
+	@EventHandler
+	public void denyInventoryMove(InventoryClickEvent event) {
+		
+		Player player = (Player) event.getWhoClicked();
+		
+		for(String arenaName : main.getConfig().getConfigurationSection("Arenas").getKeys(false)) {
+			
+			int arenaNum = data.getArenaNum(arenaName);
+			
+			for(int count = 0; count < data.getArena(arenaNum).getInGameCount(); count++) {
+				
+				if(player.getUniqueId().toString().equals(data.getArena(arenaNum).getInGame(count))) {
+					event.setCancelled(true);
+				}
+				
+			}
+			
+		}
+		
+	}
+
+	@EventHandler
+	public void onPlayerDropItem(PlayerDropItemEvent event) {
+		
+		Player player = (Player) event.getPlayer();
+		
+		for(String arenaName : main.getConfig().getConfigurationSection("Arenas").getKeys(false)) {
+			
+			int arenaNum = data.getArenaNum(arenaName);
+			
+			for(int count = 0; count < data.getArena(arenaNum).getInGameCount(); count++) {
+				
+				if(player.getUniqueId().toString().equals(data.getArena(arenaNum).getInGame(count))) {
+					event.setCancelled(true);
+				}
+				
+			}
+			
+		}
+		
+	}
 }
+
