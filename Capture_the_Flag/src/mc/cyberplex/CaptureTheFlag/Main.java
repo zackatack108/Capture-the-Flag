@@ -1,8 +1,17 @@
-package ctf;
+package mc.cyberplex.CaptureTheFlag;
 
 import java.io.File;
 
 import org.bukkit.plugin.java.JavaPlugin;
+
+import mc.cyberplex.CaptureTheFlag.arena.ArenaState;
+import mc.cyberplex.CaptureTheFlag.listeners.FriendlyFire;
+import mc.cyberplex.CaptureTheFlag.listeners.GetFlag;
+import mc.cyberplex.CaptureTheFlag.listeners.Inventory;
+import mc.cyberplex.CaptureTheFlag.listeners.LeaveJoinMC;
+import mc.cyberplex.CaptureTheFlag.listeners.PlayerDeath;
+import mc.cyberplex.CaptureTheFlag.listeners.PlayerScore;
+import mc.cyberplex.CaptureTheFlag.listeners.SignListener;
 
 public class Main extends JavaPlugin {
 	
@@ -25,9 +34,14 @@ public class Main extends JavaPlugin {
 		this.getCommand("ctf").setExecutor(new Commands());
 
 		//register listeners
-		getServer().getPluginManager().registerEvents(new Listeners(), this);
-		getServer().getPluginManager().registerEvents(new SignListener(), this);
 		getServer().getPluginManager().registerEvents(new FriendlyFire(), this);
+		getServer().getPluginManager().registerEvents(new GetFlag(), this);
+		getServer().getPluginManager().registerEvents(new Inventory(), this);
+		getServer().getPluginManager().registerEvents(new LeaveJoinMC(), this);
+		getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
+		getServer().getPluginManager().registerEvents(new PlayerScore(), this);
+		getServer().getPluginManager().registerEvents(new SignListener(), this);
+		
 	}
 
 	public void onDisable(){
