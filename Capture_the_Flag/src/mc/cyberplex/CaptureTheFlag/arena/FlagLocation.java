@@ -22,12 +22,12 @@ public class FlagLocation {
 	public Location redFlagSpawn(String arena){
 
 		//get the red flag coordinates from the config
-		world = config.getString("Arenas." + arena + ".Red.Flag.World");
-		xPos = config.getDouble("Arenas." + arena + ".Red.Flag.X");
-		yPos = config.getDouble("Arenas." + arena + ".Red.Flag.Y");
-		zPos = config.getDouble("Arenas." + arena + ".Red.Flag.Z");
-		yaw = config.getDouble("Arenas." + arena + ".Red.Flag.Yaw");
-		pitch = config.getDouble("Arenas." + arena + ".Red.Flag.Pitch");
+		world = config.getString("Arenas." + arena + ".red.flag.world");
+		xPos = config.getDouble("Arenas." + arena + ".red.flag.x");
+		yPos = config.getDouble("Arenas." + arena + ".red.flag.y");
+		zPos = config.getDouble("Arenas." + arena + ".red.flag.z");
+		yaw = config.getDouble("Arenas." + arena + ".red.flag.yaw");
+		pitch = config.getDouble("Arenas." + arena + ".red.flag.pitch");
 
 		Location redFlagLocation = new Location(Bukkit.getServer().getWorld(world), xPos, yPos, zPos, (float) yaw, (float) pitch);
 
@@ -38,12 +38,12 @@ public class FlagLocation {
 	public Location blueFlagSpawn(String arena){
 
 		//get the blue flag coordinates from the config
-		world = config.getString("Arenas." + arena + ".Blue.Flag.World");
-		xPos= config.getDouble("Arenas." + arena + ".Blue.Flag.X");
-		yPos = config.getDouble("Arenas." + arena + ".Blue.Flag.Y");
-		zPos = config.getDouble("Arenas." + arena + ".Blue.Flag.Z");
-		yaw = config.getDouble("Arenas." + arena + ".Blue.Flag.Yaw");
-		pitch = config.getDouble("Arenas." + arena + ".Blue.Flag.Pitch");
+		world = config.getString("Arenas." + arena + ".blue.flag.world");
+		xPos= config.getDouble("Arenas." + arena + ".blue.flag.x");
+		yPos = config.getDouble("Arenas." + arena + ".blue.flag.y");
+		zPos = config.getDouble("Arenas." + arena + ".blue.flag.z");
+		yaw = config.getDouble("Arenas." + arena + ".blue.flag.yaw");
+		pitch = config.getDouble("Arenas." + arena + ".blue.flag.pitch");
 
 		Location blueFlagLocation = new Location(Bukkit.getServer().getWorld(world), xPos, yPos, zPos, (float) yaw, (float) pitch);
 
@@ -54,12 +54,12 @@ public class FlagLocation {
 	public double redFlagArea(String arena, int subscript){
 
 		//get the red flag coordinates from the config
-		world = config.getString("Arenas." + arena + ".Red.Flag.World");
-		xPos = config.getDouble("Arenas." + arena + ".Red.Flag.X");
-		yPos = config.getDouble("Arenas." + arena + ".Red.Flag.Y");
-		zPos = config.getDouble("Arenas." + arena + ".Red.Flag.Z");
-		yaw = config.getDouble("Arenas." + arena + ".Red.Flag.Yaw");
-		pitch = config.getDouble("Arenas." + arena + ".Red.Flag.Pitch");
+		world = config.getString("Arenas." + arena + ".red.flag.world");
+		xPos = config.getDouble("Arenas." + arena + ".red.flag.x");
+		yPos = config.getDouble("Arenas." + arena + ".red.flag.y");
+		zPos = config.getDouble("Arenas." + arena + ".red.flag.z");
+		yaw = config.getDouble("Arenas." + arena + ".red.flag.yaw");
+		pitch = config.getDouble("Arenas." + arena + ".red.flag.pitch");
 
 		xPos1 = xPos + 2.0;
 		xPos2 = xPos - 2.0;
@@ -80,12 +80,12 @@ public class FlagLocation {
 	public double blueFlagArea(String arena, int subscript){
 
 		//get the blue flag coordinates from the config
-		world = config.getString("Arenas." + arena + ".Blue.Flag.World");
-		xPos= config.getDouble("Arenas." + arena + ".Blue.Flag.X");
-		yPos = config.getDouble("Arenas." + arena + ".Blue.Flag.Y");
-		zPos = config.getDouble("Arenas." + arena + ".Blue.Flag.Z");
-		yaw = config.getDouble("Arenas." + arena + ".Blue.Flag.Yaw");
-		pitch = config.getDouble("Arenas." + arena + ".Blue.Flag.Pitch");
+		world = config.getString("Arenas." + arena + ".blue.flag.world");
+		xPos= config.getDouble("Arenas." + arena + ".blue.flag.x");
+		yPos = config.getDouble("Arenas." + arena + ".blue.flag.y");
+		zPos = config.getDouble("Arenas." + arena + ".blue.flag.z");
+		yaw = config.getDouble("Arenas." + arena + ".blue.flag.yaw");
+		pitch = config.getDouble("Arenas." + arena + ".blue.flag.pitch");
 
 		xPos1 = xPos + 2.0;
 		xPos2 = xPos - 2.0;
@@ -115,12 +115,12 @@ public class FlagLocation {
 
 		Location redFlag = new Location(Bukkit.getServer().getWorld(world), xPos, yPos, zPos, (float) yaw, (float) pitch);
 
-		config.set("Arenas." + arena + ".Red.Flag.Dropped Location.World", world);
-		config.set("Arenas." + arena + ".Red.Flag.Dropped Location.X", xPos);
-		config.set("Arenas." + arena + ".Red.Flag.Dropped Location.Y", yPos);
-		config.set("Arenas." + arena + ".Red.Flag.Dropped Location.Z", zPos);
-		config.set("Arenas." + arena + ".Red.Flag.Dropped Location.Yaw", yaw);
-		config.set("Arenas." + arena + ".Red.Flag.Dropped Location.Pitch", pitch);
+		config.set("Arenas." + arena + ".red.flag.dropped location.world", world);
+		config.set("Arenas." + arena + ".red.flag.dropped location.x", xPos);
+		config.set("Arenas." + arena + ".red.flag.dropped location.y", yPos);
+		config.set("Arenas." + arena + ".red.flag.dropped location.z", zPos);
+		config.set("Arenas." + arena + ".red.flag.dropped location.yaw", yaw);
+		config.set("Arenas." + arena + ".red.flag.dropped location.pitch", pitch);
 		main.saveConfig();
 
 		return redFlag;
@@ -138,12 +138,12 @@ public class FlagLocation {
 
 		Location blueFlag = new Location(Bukkit.getServer().getWorld(world), xPos, yPos, zPos, (float) yaw, (float) pitch);
 
-		config.set("Arenas." + arena + ".Blue.Flag.Dropped Location.World", world);
-		config.set("Arenas." + arena + ".Blue.Flag.Dropped Location.X", xPos);
-		config.set("Arenas." + arena + ".Blue.Flag.Dropped Location.Y", yPos);
-		config.set("Arenas." + arena + ".Blue.Flag.Dropped Location.Z", zPos);
-		config.set("Arenas." + arena + ".Blue.Flag.Dropped Location.Yaw", yaw);
-		config.set("Arenas." + arena + ".Blue.Flag.Dropped Location.Pitch", pitch);
+		config.set("Arenas." + arena + ".blue.flag.dropped location.world", world);
+		config.set("Arenas." + arena + ".blue.flag.dropped location.x", xPos);
+		config.set("Arenas." + arena + ".blue.flag.dropped location.y", yPos);
+		config.set("Arenas." + arena + ".blue.flag.dropped location.z", zPos);
+		config.set("Arenas." + arena + ".blue.flag.dropped location.yaw", yaw);
+		config.set("Arenas." + arena + ".blue.flag.dropped location.pitch", pitch);
 		main.saveConfig();
 
 		return blueFlag;
@@ -153,12 +153,12 @@ public class FlagLocation {
 	public Location redDroppedLocation(String arena){
 
 		//get the red flag coordinates from the config
-		world = config.getString("Arenas." + arena + ".Red.Flag.Dropped Location.World");
-		xPos = config.getDouble("Arenas." + arena + ".Red.Flag.Dropped Location.X");
-		yPos = config.getDouble("Arenas." + arena + ".Red.Flag.Dropped Location.Y");
-		zPos = config.getDouble("Arenas." + arena + ".Red.Flag.Dropped Location.Z");
-		yaw = config.getDouble("Arenas." + arena + ".Red.Flag.Dropped Location.Yaw");
-		pitch = config.getDouble("Arenas." + arena + ".Red.Flag.Dropped Location.Pitch");
+		world = config.getString("Arenas." + arena + ".red.flag.dropped location.world");
+		xPos = config.getDouble("Arenas." + arena + ".red.flag.dropped location.x");
+		yPos = config.getDouble("Arenas." + arena + ".red.flag.dropped location.y");
+		zPos = config.getDouble("Arenas." + arena + ".red.flag.dropped location.z");
+		yaw = config.getDouble("Arenas." + arena + ".red.flag.dropped location.yaw");
+		pitch = config.getDouble("Arenas." + arena + ".red.flag.dropped location.pitch");
 
 		Location redFlagLocation = new Location(Bukkit.getServer().getWorld(world), xPos, yPos, zPos, (float) yaw, (float) pitch);
 
@@ -169,12 +169,12 @@ public class FlagLocation {
 	public Location blueDroppedLocation(String arena){
 
 		//get the red flag coordinates from the config
-		world = config.getString("Arenas." + arena + ".Blue.Flag.Dropped Location.World");
-		xPos = config.getDouble("Arenas." + arena + ".Blue.Flag.Dropped Location.X");
-		yPos = config.getDouble("Arenas." + arena + ".Blue.Flag.Dropped Location.Y");
-		zPos = config.getDouble("Arenas." + arena + ".Blue.Flag.Dropped Location.Z");
-		yaw = config.getDouble("Arenas." + arena + ".Blue.Flag.Dropped Location.Yaw");
-		pitch = config.getDouble("Arenas." + arena + ".Blue.Flag.Dropped Location.Pitch");
+		world = config.getString("Arenas." + arena + ".blue.flag.dropped location.world");
+		xPos = config.getDouble("Arenas." + arena + ".blue.flag.dropped location.x");
+		yPos = config.getDouble("Arenas." + arena + ".blue.flag.dropped location.y");
+		zPos = config.getDouble("Arenas." + arena + ".blue.flag.dropped location.z");
+		yaw = config.getDouble("Arenas." + arena + ".blue.flag.dropped location.yaw");
+		pitch = config.getDouble("Arenas." + arena + ".blue.flag.dropped location.pitch");
 
 		Location blueFlagLocation = new Location(Bukkit.getServer().getWorld(world), xPos, yPos, zPos, (float) yaw, (float) pitch);
 
@@ -185,12 +185,12 @@ public class FlagLocation {
 	public double redDroppedFlagArea(String arena, int subscript){
 
 		//get the red flag coordinates from the config
-		world = config.getString("Arenas." + arena + ".Red.Flag.Dropped Location.World");
-		xPos = config.getDouble("Arenas." + arena + ".Red.Flag.Dropped Location.X");
-		yPos = config.getDouble("Arenas." + arena + ".Red.Flag.Dropped Location.Y");
-		zPos = config.getDouble("Arenas." + arena + ".Red.Flag.Dropped Location.Z");
-		yaw = config.getDouble("Arenas." + arena + ".Red.Flag.Dropped Location.Yaw");
-		pitch = config.getDouble("Arenas." + arena + ".Red.Flag.Dropped Location.Pitch");
+		world = config.getString("Arenas." + arena + ".red.flag.dropped location.world");
+		xPos = config.getDouble("Arenas." + arena + ".red.flag.dropped location.x");
+		yPos = config.getDouble("Arenas." + arena + ".red.flag.dropped location.y");
+		zPos = config.getDouble("Arenas." + arena + ".red.flag.dropped location.z");
+		yaw = config.getDouble("Arenas." + arena + ".red.flag.dropped location.yaw");
+		pitch = config.getDouble("Arenas." + arena + ".red.flag.dropped location.pitch");
 
 		xPos1 = xPos + 2.0;
 		xPos2 = xPos - 2.0;
@@ -211,12 +211,12 @@ public class FlagLocation {
 	public double blueDroppedFlagArea(String arena, int subscript){
 
 		//get the red flag coordinates from the config
-		world = config.getString("Arenas." + arena + ".Blue.Flag.Dropped Location.World");
-		xPos = config.getDouble("Arenas." + arena + ".Blue.Flag.Dropped Location.X");
-		yPos = config.getDouble("Arenas." + arena + ".Blue.Flag.Dropped Location.Y");
-		zPos = config.getDouble("Arenas." + arena + ".Blue.Flag.Dropped Location.Z");
-		yaw = config.getDouble("Arenas." + arena + ".Blue.Flag.Dropped Location.Yaw");
-		pitch = config.getDouble("Arenas." + arena + ".Blue.Flag.Dropped Location.Pitch");
+		world = config.getString("Arenas." + arena + ".blue.flag.dropped location.world");
+		xPos = config.getDouble("Arenas." + arena + ".blue.flag.dropped location.x");
+		yPos = config.getDouble("Arenas." + arena + ".blue.flag.dropped location.y");
+		zPos = config.getDouble("Arenas." + arena + ".blue.flag.dropped location.z");
+		yaw = config.getDouble("Arenas." + arena + ".blue.flag.dropped location.yaw");
+		pitch = config.getDouble("Arenas." + arena + ".blue.flag.dropped location.pitch");
 
 		xPos1 = xPos + 2.0;
 		xPos2 = xPos - 2.0;

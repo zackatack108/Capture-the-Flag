@@ -32,12 +32,12 @@ public class FlagData {
 				pitch = player.getLocation().getPitch();
 
 		//Save spawnpoint to config
-		main.getConfig().set("Arenas." + arenaName + ".Blue.Flag.World", world);
-		main.getConfig().set("Arenas." + arenaName + ".Blue.Flag.X", xPos);
-		main.getConfig().set("Arenas." + arenaName + ".Blue.Flag.Y", yPos);
-		main.getConfig().set("Arenas." + arenaName + ".Blue.Flag.Z", zPos);
-		main.getConfig().set("Arenas." + arenaName + ".Blue.Flag.Yaw", yaw);
-		main.getConfig().set("Arenas." + arenaName + ".Blue.Flag.Pitch", pitch);
+		main.getConfig().set("Arenas." + arenaName + ".blue.flag.world", world);
+		main.getConfig().set("Arenas." + arenaName + ".blue.flag.x", xPos);
+		main.getConfig().set("Arenas." + arenaName + ".blue.flag.y", yPos);
+		main.getConfig().set("Arenas." + arenaName + ".blue.flag.z", zPos);
+		main.getConfig().set("Arenas." + arenaName + ".blue.flag.yaw", yaw);
+		main.getConfig().set("Arenas." + arenaName + ".blue.flag.pitch", pitch);
 		main.saveConfig();
 
 	}
@@ -55,12 +55,12 @@ public class FlagData {
 				pitch = player.getLocation().getPitch();
 
 		//Save spawnpoint to config
-		main.getConfig().set("Arenas." + arenaName + ".Red.Flag.World", world);
-		main.getConfig().set("Arenas." + arenaName + ".Red.Flag.X", xPos);
-		main.getConfig().set("Arenas." + arenaName + ".Red.Flag.Y", yPos);
-		main.getConfig().set("Arenas." + arenaName + ".Red.Flag.Z", zPos);
-		main.getConfig().set("Arenas." + arenaName + ".Red.Flag.Yaw", yaw);
-		main.getConfig().set("Arenas." + arenaName + ".Red.Flag.Pitch", pitch);
+		main.getConfig().set("Arenas." + arenaName + ".red.flag.world", world);
+		main.getConfig().set("Arenas." + arenaName + ".red.flag.x", xPos);
+		main.getConfig().set("Arenas." + arenaName + ".red.flag.y", yPos);
+		main.getConfig().set("Arenas." + arenaName + ".red.flag.z", zPos);
+		main.getConfig().set("Arenas." + arenaName + ".red.flag.yaw", yaw);
+		main.getConfig().set("Arenas." + arenaName + ".red.flag.pitch", pitch);
 		main.saveConfig();
 
 	}

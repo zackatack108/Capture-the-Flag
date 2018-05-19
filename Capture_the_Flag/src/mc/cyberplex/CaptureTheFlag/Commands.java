@@ -1,6 +1,8 @@
 package mc.cyberplex.CaptureTheFlag;
 
 import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -38,7 +40,7 @@ public class Commands implements CommandExecutor{
 		FileConfiguration config = main.getConfig();
 
 		Player player = (Player) sender;
-		String playerID = player.getUniqueId().toString();
+		UUID playerID = player.getUniqueId();
 
 		//check to see if a player is running the command versus the console
 		if(sender instanceof Player){
@@ -233,11 +235,10 @@ public class Commands implements CommandExecutor{
 								player.sendMessage(ChatColor.GREEN + "Creating CTF arena " + args[1].toLowerCase());
 
 								//save arena to config
-								config.set("Arenas." + args[1].toLowerCase(), args[1].toLowerCase());
-								config.set("Arenas." + args[1].toLowerCase() + ".min", 2);
-								config.set("Arenas." + args[1].toLowerCase() + ".max", 4);
-								config.set("Arenas." + args[1].toLowerCase() + ".state", "waiting for players");
-								main.saveConfig();
+								data.addArena(args[1].toLowerCase());
+								data.setMinPlayers(args[1].toLowerCase(), 2);
+								data.setMaxPlayers(args[1].toLowerCase(), 4);
+								data.setState(args[1].toLowerCase(), "waiting for players");
 
 							}
 
@@ -270,8 +271,7 @@ public class Commands implements CommandExecutor{
 							if(config.contains("Arenas." + args[1].toLowerCase())){
 
 								//remove arena from config
-								config.set("Arenas." + args[1].toLowerCase(), null);
-								main.saveConfig();
+								data.removeArena(args[1].toLowerCase());
 
 								//send message to user saying the arena was removed
 								player.sendMessage(ChatColor.YELLOW + "Removing CTF arena " + args[1].toLowerCase());
@@ -701,7 +701,7 @@ public class Commands implements CommandExecutor{
 									player.sendMessage(ChatColor.GREEN + "Spawn removed for " + team + " team");
 
 									//remove spawn from config
-									config.set("Arenas." + args[2].toLowerCase() + "." + team + ".Spawn", null);
+									config.set("Arenas." + args[2].toLowerCase() + "." + team + ".spawn", null);
 									main.saveConfig();
 
 								} else {
@@ -759,7 +759,7 @@ public class Commands implements CommandExecutor{
 									player.sendMessage(ChatColor.GREEN + "Flag removed for " + team + " team");
 
 									//remove flag from config
-									config.set("Arenas." + args[2].toLowerCase() + "." + team + ".Flag", null);
+									config.set("Arenas." + args[2].toLowerCase() + "." + team + ".flag", null);
 									main.saveConfig();
 
 								} else {
@@ -797,8 +797,7 @@ public class Commands implements CommandExecutor{
 									player.sendMessage(ChatColor.GREEN + "Lobby removed from " + args[2].toLowerCase() + " arena");
 
 									//Remove lobby from config
-									config.set("Arenas." + args[2].toLowerCase() +".Lobby", null);
-									main.saveConfig();
+									data.removeLobby(args[2].toLowerCase());
 
 								} else {
 
@@ -829,8 +828,7 @@ public class Commands implements CommandExecutor{
 							if(args.length == 2){
 
 								//Save spawnpoint to config
-								config.set("Hub", null);
-								main.saveConfig();
+								data.removeHub();
 								player.sendMessage(ChatColor.RED + "Hub removed");
 
 							} else {
