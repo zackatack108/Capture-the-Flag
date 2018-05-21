@@ -35,6 +35,11 @@ public class PlayerState {
 			//tells player that the arena is running
 			player.sendMessage(ChatColor.RED + "Sorry, that arena is currently running");
 
+		} else if(data.getArena(data.getArenaNum(arenaName)).getGameCount() == data.getMaxPlayers(arenaName)){
+			
+			//tell the player that the arena is full
+			player.sendMessage(ChatColor.RED + "Sorry, that arena is full");
+			
 		} else {
 
 			//save the player inventory

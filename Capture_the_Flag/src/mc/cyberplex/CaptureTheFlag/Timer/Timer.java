@@ -45,8 +45,10 @@ public class Timer {
 				int seconds = data.getArena(arenaNum).getSeconds();
 				int minutes = data.getArena(arenaNum).getMinutes();
 
-				if(data.getArena(arenaNum).getGameCount() < data.getMinPlayers(arenaName)){					
-					stopTimer(arenaName, TimerType.LOBBY);					
+				if(data.getArena(arenaNum).getGameCount() < data.getMinPlayers(arenaName)){
+					stopTimer(arenaName, TimerType.LOBBY);
+					data.getArena(arenaNum).setSeconds(0);
+					data.getArena(arenaNum).setMinutes(5);
 				}
 
 				playerList.getPlayer(arenaName, Message.LOBBY);
@@ -120,8 +122,11 @@ public class Timer {
 
 						Player player;
 						UUID playerID = data.getArena(arenaNum).getPlayer(count);
-						player = Bukkit.getPlayer(playerID);						
-						player.setFoodLevel(20);
+
+						if(Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(playerID))) {
+							player = Bukkit.getPlayer(playerID);						
+							player.setFoodLevel(20);
+						}
 
 					}
 
@@ -172,8 +177,12 @@ public class Timer {
 							Player player;
 							UUID playerID = data.getCTFData(arenaNum).getHasRedFlag();
 
-							player = Bukkit.getPlayer(playerID);
-							player.setHealth(0);
+							if(Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(playerID))) {
+
+								player = Bukkit.getPlayer(playerID);
+								player.setHealth(0);
+
+							}
 
 						}
 
@@ -221,11 +230,11 @@ public class Timer {
 				int seconds = data.getCTFData(arenaNum).getBlueFlagSeconds();
 
 				playerList.getPlayer(arenaName, Message.GAME);
-				
+
 				if(seconds <= 0 && minutes >= 1) {
 
 					seconds = 60;
-					
+
 					data.getCTFData(arenaNum).setBlueFlagMinutes(--minutes);
 					data.getCTFData(arenaNum).setBlueFlagSeconds(seconds);
 
@@ -235,17 +244,21 @@ public class Timer {
 					if(seconds == 0){
 
 						stopTimer(arenaName, TimerType.BLUE);
-						
+
 						if(data.getCTFData(arenaNum).getHasBlueFlag() != null) {
-							
+
 							Player player;
 							UUID playerID = data.getCTFData(arenaNum).getHasBlueFlag();
-							
-							player = Bukkit.getPlayer(playerID);
-							player.setHealth(0);
-							
+
+							if(Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(playerID))) {
+
+								player = Bukkit.getPlayer(playerID);
+								player.setHealth(0);
+
+							}
+
 						}
-						
+
 						stopTimer(arenaName, TimerType.BLUE);
 
 						data.getCTFData(arenaNum).setBlueTaken(false);
@@ -263,7 +276,7 @@ public class Timer {
 					}
 
 				}
-				
+
 				data.getCTFData(arenaNum).setBlueFlagSeconds(--seconds);
 
 			}

@@ -19,7 +19,6 @@ public class LeaveJoinMC implements Listener {
 	Main main = Main.getMain();
 	Arena data = new Arena();
 	PlayerState playerState = new PlayerState();
-	PlayerDeath playerDeath = new PlayerDeath();
 	PlayerList playerList = new PlayerList();
 	
 	BukkitTask rejoinTime;
@@ -58,8 +57,11 @@ public class LeaveJoinMC implements Listener {
 					}.runTaskTimer(main, 0, 20);
 
 				}
+				
 			}
+			
 		}
+		
 	}
 
 	@EventHandler
@@ -76,6 +78,7 @@ public class LeaveJoinMC implements Listener {
 				if(player.getUniqueId().equals(data.getArena(arenaNum).getPlayer(subscript))){
 
 					rejoinTime.cancel();
+					PlayerDeath playerDeath = new PlayerDeath();
 					playerDeath.onRespawn(player);
 					playerList.getPlayer(arenaName, Message.GAME);
 

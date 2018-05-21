@@ -10,6 +10,7 @@ import mc.cyberplex.CaptureTheFlag.Main;
 import mc.cyberplex.CaptureTheFlag.Timer.Timer;
 import mc.cyberplex.CaptureTheFlag.Timer.TimerType;
 import mc.cyberplex.CaptureTheFlag.arena.Arena;
+import mc.cyberplex.CaptureTheFlag.arena.ArenaState;
 import mc.cyberplex.CaptureTheFlag.arena.FlagData;
 import mc.cyberplex.CaptureTheFlag.arena.FlagLocation;
 import mc.cyberplex.CaptureTheFlag.arena.Message;
@@ -85,6 +86,14 @@ public class PlayerScore implements Listener {
 								time.stopTimer(arenaName, TimerType.BLUE);
 								
 								playerList.getPlayer(arenaName, Message.GAME);
+								
+								//check to see if the score is 10 if it is end the game
+								if(data.getCTFData(arenaNum).getRedScore() == 10) {
+									
+									ArenaState state = new ArenaState();
+									state.stop(arenaName);
+									
+								}
 
 							}
 
@@ -126,6 +135,15 @@ public class PlayerScore implements Listener {
 								time.stopTimer(arenaName, TimerType.RED);
 
 								playerList.getPlayer(arenaName, Message.GAME);
+								
+								//check if blue score is 10 and end the game
+								if(data.getCTFData(arenaNum).getBlueScore() == 10) {
+									
+									ArenaState state = new ArenaState();
+									state.stop(arenaName);
+									
+								}
+								
 							}
 
 						}

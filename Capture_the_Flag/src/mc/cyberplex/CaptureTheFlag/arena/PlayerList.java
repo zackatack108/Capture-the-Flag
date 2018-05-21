@@ -24,17 +24,22 @@ public class PlayerList {
 		for(int count = 0; count < data.getArena(arenaNum).getGameCount(); count++){
 			
 			UUID playerID = data.getArena(arenaNum).getPlayer(count);
-			Player player = Bukkit.getPlayer(playerID);
 			
-			if(msg == Message.LOBBY){
-				board[arenaNum] = new Scoreboards();
-				board[arenaNum].lobbyBoard(arenaNum, player, arenaName);
-			} else if(msg == Message.GAME){
-				board[arenaNum] = new Scoreboards();
-				board[arenaNum].gameBoard(arenaNum, player, arenaName);
-			} else if(msg == Message.FLAG){
-				player.sendMessage(data.getCTFData(arenaNum).getFlagMsg());
-			}
+			if(Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(playerID))) {
+				
+				Player player = Bukkit.getPlayer(playerID);
+				
+				if(msg == Message.LOBBY){
+					board[arenaNum] = new Scoreboards();
+					board[arenaNum].lobbyBoard(arenaNum, player, arenaName);
+				} else if(msg == Message.GAME){
+					board[arenaNum] = new Scoreboards();
+					board[arenaNum].gameBoard(arenaNum, player, arenaName);
+				} else if(msg == Message.FLAG){
+					player.sendMessage(data.getCTFData(arenaNum).getFlagMsg());
+				}
+				
+			}			
 			
 		}
 		
