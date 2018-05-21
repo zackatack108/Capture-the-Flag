@@ -1,7 +1,11 @@
 package mc.cyberplex.CaptureTheFlag.Timer;
 
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import mc.cyberplex.CaptureTheFlag.Main;
@@ -45,13 +49,12 @@ public class Timer {
 					stopTimer(arenaName, TimerType.LOBBY);					
 				}
 
+				playerList.getPlayer(arenaName, Message.LOBBY);
+
 				if(seconds <= 0 && minutes >= 1){
 
 					seconds = 60;
 					data.getArena(arenaNum).setSeconds(seconds);
-
-					playerList.getPlayer(arenaName, Message.LOBBY);					
-
 					data.getArena(arenaNum).setMinutes(--minutes);
 
 				} else if (minutes < 1){					
@@ -66,7 +69,7 @@ public class Timer {
 					}
 				}
 
-				playerList.getPlayer(arenaName, Message.LOBBY);
+
 				data.getArena(arenaNum).setSeconds(--seconds);
 
 			}
@@ -93,6 +96,8 @@ public class Timer {
 				int seconds = data.getArena(arenaNum).getSeconds();
 				int minutes = data.getArena(arenaNum).getMinutes();
 
+				playerList.getPlayer(arenaName, Message.GAME);
+
 				if(seconds <= 0 && minutes >= 1){
 
 					seconds = 60;
@@ -109,7 +114,19 @@ public class Timer {
 					}
 				}
 
-				playerList.getPlayer(arenaName, Message.GAME);	
+				if(seconds == 30) {
+
+					for(int count = 0; count < data.getArena(arenaNum).getGameCount(); count++) {
+
+						Player player;
+						UUID playerID = data.getArena(arenaNum).getPlayer(count);
+						player = Bukkit.getPlayer(playerID);						
+						player.setFoodLevel(20);
+
+					}
+
+				}
+
 				data.getArena(arenaNum).setSeconds(--seconds);
 
 			}
@@ -121,35 +138,64 @@ public class Timer {
 	//---------------------------------------------------
 	//Timer for red flag when dropped
 	//---------------------------------------------------
-	public void redFlagTime(String arenaName, int time){
+	public void redFlagTime(String arenaName, int min, int sec){
 
 		int arenaNum = data.getArenaNum(arenaName);
-		data.getCTFData(arenaNum).setRedFlagTime(time);
+		data.getCTFData(arenaNum).setRedFlagMinutes(min);
+		data.getCTFData(arenaNum).setRedFlagSeconds(sec);
 
 		data.getCTFData(arenaNum).redTimer = new BukkitRunnable() {
 
 			@Override
 			public void run(){
 
-				int seconds = data.getCTFData(arenaNum).getRedFlagTime();
+				int seconds = data.getCTFData(arenaNum).getRedFlagSeconds();
+				int minutes = data.getCTFData(arenaNum).getRedFlagMinutes();
 
-				if(seconds == 0){
+				playerList.getPlayer(arenaName, Message.GAME);
 
-					cancel();
+				if(seconds <= 0 && minutes >= 1) {
 
-					data.getCTFData(arenaNum).setRedTaken(false);
+					seconds = 60;
 
-					block = flagLoc.redDroppedLocation(arenaName).getBlock();
-					block.setType(Material.AIR);
-					flagData.getRedFlag(arenaName);
+					data.getCTFData(arenaNum).setRedFlagMinutes(--minutes);
+					data.getCTFData(arenaNum).setRedFlagSeconds(seconds);
 
-					data.getCTFData(arenaNum).setFlagMsg(ChatColor.RED + "Red flag has returned to spawn");
-					playerList.getPlayer(arenaName, Message.FLAG);					
+				} else if(minutes < 1) {
+
+					if(seconds == 0){
+
+						stopTimer(arenaName, TimerType.RED);
+
+						if(data.getCTFData(arenaNum).getHasRedFlag() != null) {
+
+							Player player;
+							UUID playerID = data.getCTFData(arenaNum).getHasRedFlag();
+
+							player = Bukkit.getPlayer(playerID);
+							player.setHealth(0);
+
+						}
+
+						stopTimer(arenaName, TimerType.RED);
+
+						data.getCTFData(arenaNum).setRedTaken(false);
+
+						block = flagLoc.redDroppedLocation(arenaName).getBlock();
+						block.setType(Material.AIR);
+						flagData.getRedFlag(arenaName);
+						main.getConfig().set("Arenas." + arenaName + ".red.flag.dropped location", null);
+
+						data.getCTFData(arenaNum).setFlagMsg(ChatColor.RED + "Red flag has returned to spawn");
+						playerList.getPlayer(arenaName, Message.FLAG);
+
+						seconds = 1;
+
+					}
 
 				}
 
-				playerList.getPlayer(arenaName, Message.GAME);
-				data.getCTFData(arenaNum).setRedFlagTime(--seconds);
+				data.getCTFData(arenaNum).setRedFlagSeconds(--seconds);
 
 			}
 
@@ -160,35 +206,65 @@ public class Timer {
 	//---------------------------------------------------
 	//Timer for blue flag when dropped
 	//---------------------------------------------------
-	public void blueFlagTime(String arenaName, int time){
+	public void blueFlagTime(String arenaName, int min, int sec){
 
 		int arenaNum = data.getArenaNum(arenaName);
-		data.getCTFData(arenaNum).setBlueFlagTime(time);
+		data.getCTFData(arenaNum).setBlueFlagMinutes(min);
+		data.getCTFData(arenaNum).setBlueFlagSeconds(sec);
 
 		data.getCTFData(arenaNum).blueTimer = new BukkitRunnable() {
 
 			@Override
 			public void run(){
 
-				int seconds = data.getCTFData(arenaNum).getBlueFlagTime();
-
-				if(seconds == 0){
-
-					cancel();
-
-					data.getCTFData(arenaNum).setBlueTaken(false);
-
-					block = flagLoc.blueDroppedLocation(arenaName).getBlock();
-					block.setType(Material.AIR);
-					flagData.getBlueFlag(arenaName);
-
-					data.getCTFData(arenaNum).setFlagMsg(ChatColor.BLUE + "Blue flag has returned to spawn");
-					playerList.getPlayer(arenaName, Message.FLAG);			
-
-				}
+				int minutes = data.getCTFData(arenaNum).getBlueFlagMinutes();
+				int seconds = data.getCTFData(arenaNum).getBlueFlagSeconds();
 
 				playerList.getPlayer(arenaName, Message.GAME);
-				data.getCTFData(arenaNum).setBlueFlagTime(--seconds);
+				
+				if(seconds <= 0 && minutes >= 1) {
+
+					seconds = 60;
+					
+					data.getCTFData(arenaNum).setBlueFlagMinutes(--minutes);
+					data.getCTFData(arenaNum).setBlueFlagSeconds(seconds);
+
+
+				} else if(minutes < 1) {
+
+					if(seconds == 0){
+
+						stopTimer(arenaName, TimerType.BLUE);
+						
+						if(data.getCTFData(arenaNum).getHasBlueFlag() != null) {
+							
+							Player player;
+							UUID playerID = data.getCTFData(arenaNum).getHasBlueFlag();
+							
+							player = Bukkit.getPlayer(playerID);
+							player.setHealth(0);
+							
+						}
+						
+						stopTimer(arenaName, TimerType.BLUE);
+
+						data.getCTFData(arenaNum).setBlueTaken(false);
+
+						block = flagLoc.blueDroppedLocation(arenaName).getBlock();
+						block.setType(Material.AIR);
+						flagData.getBlueFlag(arenaName);
+						main.getConfig().set("Arenas." + arenaName + ".blue.flag.dropped location", null);
+
+						data.getCTFData(arenaNum).setFlagMsg(ChatColor.BLUE + "Blue flag has returned to spawn");
+						playerList.getPlayer(arenaName, Message.FLAG);	
+
+						seconds = 1;
+
+					}
+
+				}
+				
+				data.getCTFData(arenaNum).setBlueFlagSeconds(--seconds);
 
 			}
 
@@ -201,23 +277,23 @@ public class Timer {
 		int arenaNum = data.getArenaNum(arenaName);
 
 		if(type.equals(TimerType.LOBBY) || type.equals(TimerType.GAME) ) {
-			
+
 			if(data.getCTFData(arenaNum).Timer != null) {
 				data.getCTFData(arenaNum).Timer.cancel();
 			}
-			
+
 		} else if(type.equals(TimerType.RED)) {
-			
+
 			if(data.getCTFData(arenaNum).redTimer != null) {
-				data.getCTFData(arenaNum).Timer.cancel();
+				data.getCTFData(arenaNum).redTimer.cancel();
 			}
-			
+
 		} else if(type.equals(TimerType.BLUE)) {
-			
+
 			if(data.getCTFData(arenaNum).blueTimer != null) {
-				data.getCTFData(arenaNum).Timer.cancel();
+				data.getCTFData(arenaNum).blueTimer.cancel();
 			}
-			
+
 		}
 
 	}

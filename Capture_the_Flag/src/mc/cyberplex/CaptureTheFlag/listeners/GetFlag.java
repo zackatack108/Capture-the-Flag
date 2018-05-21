@@ -37,6 +37,8 @@ public class GetFlag implements Listener{
 
 	boolean inGame = false, onRed = false, onBlue = false, hasRed = false, hasBlue = false;
 	Block block;
+	
+	private final int maxTime = 3;
 
 	@EventHandler
 	public void onGetFlag(PlayerInteractEvent event) {
@@ -55,19 +57,28 @@ public class GetFlag implements Listener{
 					inGame = true;
 				}
 
-				if(inGame == true && (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK) && event.getClickedBlock().getState() instanceof Banner) {
+			}
 
-					boolean redTaken = data.getCTFData(arenaNum).getRedTaken();
-					boolean blueTaken = data.getCTFData(arenaNum).getBlueTaken();
-					
-					if(player.getUniqueId().equals(data.getCTFData(arenaNum).getPlayerOnRedTeam(subscript))) { //check to see if player is on red team
+			if(inGame == true && (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK) && event.getClickedBlock().getState() instanceof Banner) {
 
-						if(blueTaken == true) {
+				boolean redTaken = data.getCTFData(arenaNum).getRedTaken();
+				boolean blueTaken = data.getCTFData(arenaNum).getBlueTaken();
 
+				//cycle through players on red team
+				for(int subscript = 0; subscript < data.getCTFData(arenaNum).getRedTeamCount(); subscript++) {
+
+					//check if the player is on red team
+					if(player.getUniqueId().equals(data.getCTFData(arenaNum).getPlayerOnRedTeam(subscript))) {
+
+						//check if blue flag is taken
+						if(blueTaken == true && data.getCTFData(arenaNum).getHasBlueFlag() == null) {
+
+							//get where the blue flag was dropped
 							for(int count = 0; count < 4; count++) {
 								blueArea[count] = flagLocation.blueDroppedFlagArea(arenaName, count);
 							}
 
+							//check if the player is near the blue flag drop area and picks up the flag
 							if(player.getLocation().getX() < blueArea[0] && player.getLocation().getX() > blueArea[1]
 									&& player.getLocation().getZ() < blueArea[2] && player.getLocation().getZ() > blueArea[3]) {
 
@@ -77,24 +88,24 @@ public class GetFlag implements Listener{
 
 									ItemStack blueFlag = new ItemStack(Material.BANNER);
 									blueFlag.setDurability((short) 4);
-									
+
 									//create colored armor for red
 									ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
 									ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS);
 									ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
-									
+
 									LeatherArmorMeta chest = (LeatherArmorMeta) chestplate.getItemMeta();
 									LeatherArmorMeta legs = (LeatherArmorMeta) leggings.getItemMeta();
 									LeatherArmorMeta feet = (LeatherArmorMeta) boots.getItemMeta();
-									
+
 									chest.setColor(Color.RED);
 									legs.setColor(Color.RED);
 									feet.setColor(Color.RED);
-									
+
 									chestplate.setItemMeta(chest);
 									leggings.setItemMeta(legs);
 									boots.setItemMeta(feet);
-									
+
 									ItemStack ironSword = new ItemStack(Material.IRON_SWORD, 1);
 
 									player.getInventory().clear();
@@ -108,7 +119,7 @@ public class GetFlag implements Listener{
 									block.setType(Material.AIR);
 
 									time.stopTimer(arenaName, TimerType.BLUE);
-									data.getCTFData(arenaNum).setBlueFlagTime(0);
+									time.blueFlagTime(arenaName, maxTime, 0);
 
 									playerList.getPlayer(arenaName, Message.GAME);
 
@@ -123,10 +134,12 @@ public class GetFlag implements Listener{
 
 						} else {
 
+							//get the blue flag spawn area
 							for(int count = 0; count < 4; count++) {
 								blueArea[count] = flagLocation.blueFlagArea(arenaName, count);
 							}
 
+							//check if the player is near the flag spawn area and pick up the flag if in the area
 							if(player.getLocation().getX() < blueArea[0] && player.getLocation().getX() > blueArea[1]
 									&& player.getLocation().getZ() < blueArea[2] && player.getLocation().getZ() > blueArea[3]) {
 
@@ -141,19 +154,19 @@ public class GetFlag implements Listener{
 									ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
 									ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS);
 									ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
-									
+
 									LeatherArmorMeta chest = (LeatherArmorMeta) chestplate.getItemMeta();
 									LeatherArmorMeta legs = (LeatherArmorMeta) leggings.getItemMeta();
 									LeatherArmorMeta feet = (LeatherArmorMeta) boots.getItemMeta();
-									
+
 									chest.setColor(Color.RED);
 									legs.setColor(Color.RED);
 									feet.setColor(Color.RED);
-									
+
 									chestplate.setItemMeta(chest);
 									leggings.setItemMeta(legs);
 									boots.setItemMeta(feet);
-									
+
 									ItemStack ironSword = new ItemStack(Material.IRON_SWORD, 1);
 
 									player.getInventory().clear();
@@ -165,6 +178,9 @@ public class GetFlag implements Listener{
 
 									block = flagLocation.blueFlagSpawn(arenaName).getBlock();	
 									block.setType(Material.AIR);
+									
+									time.stopTimer(arenaName, TimerType.BLUE);
+									time.blueFlagTime(arenaName, maxTime, 0);
 
 									data.getCTFData(arenaNum).setBlueTaken(true);
 									data.getCTFData(arenaNum).setHasBlueFlag(player);
@@ -178,14 +194,25 @@ public class GetFlag implements Listener{
 
 						}
 
-					} else if(player.getUniqueId().equals(data.getCTFData(arenaNum).getPlayerOnBlueTeam(subscript))) { //check to see if player is on blue team
+					}
 
-						if(redTaken == true) {
+				}				
 
+				//cycle through players on blue team
+				for(int subscript = 0; subscript < data.getCTFData(arenaNum).getBlueTeamCount(); subscript++) {
+
+					//check if the player is on blue team
+					if(player.getUniqueId().equals(data.getCTFData(arenaNum).getPlayerOnBlueTeam(subscript))) {
+
+						//check to see if red flag is taken
+						if(redTaken == true && data.getCTFData(arenaNum).getHasRedFlag() == null) {
+
+							//get the area the red flag was dropped
 							for(int count = 0; count < 4; count++) {
 								redArea[count] = flagLocation.redDroppedFlagArea(arenaName, count);
 							}
 
+							//check to see if the player is in the area the red flag was dropped and pick the flag up if true
 							if(player.getLocation().getX() < redArea[0] && player.getLocation().getX() > redArea[1]
 									&& player.getLocation().getZ() < redArea[2] && player.getLocation().getZ() > redArea[3]){
 
@@ -200,19 +227,19 @@ public class GetFlag implements Listener{
 									ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
 									ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS);
 									ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
-									
+
 									LeatherArmorMeta chest = (LeatherArmorMeta) chestplate.getItemMeta();
 									LeatherArmorMeta legs = (LeatherArmorMeta) leggings.getItemMeta();
 									LeatherArmorMeta feet = (LeatherArmorMeta) boots.getItemMeta();
-									
+
 									chest.setColor(Color.BLUE);
 									legs.setColor(Color.BLUE);
 									feet.setColor(Color.BLUE);
-									
+
 									chestplate.setItemMeta(chest);
 									leggings.setItemMeta(legs);
 									boots.setItemMeta(feet);
-									
+
 									ItemStack ironSword = new ItemStack(Material.IRON_SWORD, 1);
 
 									player.getInventory().clear();
@@ -226,7 +253,7 @@ public class GetFlag implements Listener{
 									block.setType(Material.AIR);
 
 									time.stopTimer(arenaName, TimerType.RED);
-									data.getCTFData(arenaNum).setRedFlagTime(0);
+									time.redFlagTime(arenaName, maxTime, 0);
 
 									playerList.getPlayer(arenaName, Message.GAME);
 
@@ -242,10 +269,12 @@ public class GetFlag implements Listener{
 
 						} else {
 
+							//get the spawn area of the red flag
 							for(int count = 0; count < 4; count++){
 								redArea[count] = flagLocation.redFlagArea(arenaName, count);
 							}
 
+							//check to see if the player is in the area of the red flag and pick up the flag if true
 							if(player.getLocation().getX() < redArea[0] && player.getLocation().getX() > redArea[1]
 									&& player.getLocation().getZ() < redArea[2] && player.getLocation().getZ() > redArea[3]){
 
@@ -260,19 +289,19 @@ public class GetFlag implements Listener{
 									ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
 									ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS);
 									ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
-									
+
 									LeatherArmorMeta chest = (LeatherArmorMeta) chestplate.getItemMeta();
 									LeatherArmorMeta legs = (LeatherArmorMeta) leggings.getItemMeta();
 									LeatherArmorMeta feet = (LeatherArmorMeta) boots.getItemMeta();
-									
+
 									chest.setColor(Color.BLUE);
 									legs.setColor(Color.BLUE);
 									feet.setColor(Color.BLUE);
-									
+
 									chestplate.setItemMeta(chest);
 									leggings.setItemMeta(legs);
 									boots.setItemMeta(feet);
-									
+
 									ItemStack ironSword = new ItemStack(Material.IRON_SWORD, 1);
 
 									player.getInventory().clear();
@@ -284,6 +313,9 @@ public class GetFlag implements Listener{
 
 									block = flagLocation.redFlagSpawn(arenaName).getBlock();	
 									block.setType(Material.AIR);
+									
+									time.stopTimer(arenaName, TimerType.RED);
+									time.redFlagTime(arenaName, maxTime, 0);
 
 									data.getCTFData(arenaNum).setRedTaken(true);
 									data.getCTFData(arenaNum).setHasRedFlag(player);
@@ -306,5 +338,5 @@ public class GetFlag implements Listener{
 		}
 
 	}
-	
+
 }

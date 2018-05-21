@@ -3,12 +3,15 @@ package mc.cyberplex.CaptureTheFlag.arena;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import mc.cyberplex.CaptureTheFlag.Main;
 import mc.cyberplex.CaptureTheFlag.Timer.Timer;
 import mc.cyberplex.CaptureTheFlag.Timer.TimerType;
 import mc.cyberplex.CaptureTheFlag.kits.Kits;
+import mc.cyberplex.CaptureTheFlag.listeners.JoinSign;
 import net.md_5.bungee.api.ChatColor;
 
 public class ArenaState {
@@ -51,11 +54,14 @@ public class ArenaState {
 		flag.getBlueFlag(arenaName);
 
 		playerList.getPlayer(arenaName, Message.GAME);
-		
+
 		data.setState(arenaName, "running");
 
 		time.stopTimer(arenaName, TimerType.LOBBY);
-		time.arenaTime(arenaName, 30);		
+		time.arenaTime(arenaName, 20);
+		
+		JoinSign sign = new JoinSign();
+		sign.updateSign(arenaName);
 	}
 
 	public void stop(String arenaName){
@@ -71,7 +77,7 @@ public class ArenaState {
 
 			//stop the timer
 			time.stopTimer(arenaName, TimerType.GAME);
-			
+
 			data.setState(arenaName, "stopping");
 
 			//check if red team won 
@@ -106,22 +112,44 @@ public class ArenaState {
 				playerList.getPlayer(arenaName, Message.FLAG);
 
 			}
-			
-			for(int subscript = 0; subscript < data.getArena(arenaNum).getGameCount(); subscript++){
+
+			int playerCount = data.getArena(arenaNum).getGameCount();			
+			for(int subscript = 0; subscript < playerCount; subscript++){
 
 				//assign the playerID to the UUID of the user in the game
-				playerID = data.getArena(arenaNum).getPlayer(subscript);
+				playerID = data.getArena(arenaNum).getPlayer(0);
 
 				//get the player from the UUID
 				player = Bukkit.getPlayer(playerID);
-				
+
 				PlayerState playerState = new PlayerState();
 				playerState.leaveGame(arenaName, player);
 
 			}
-			
+
+			Block block;
+			FlagLocation flagLoc = new FlagLocation();
+			FlagData flagData = new FlagData();
+
+			if(data.getCTFData(arenaNum).getRedTaken() == true) {
+				block = flagLoc.redDroppedLocation(arenaName).getBlock();
+				block.setType(Material.AIR);
+				flagData.getRedFlag(arenaName);
+				main.getConfig().set("Arenas." + arenaName + ".red.flag.dropped location", null);
+			}
+
+			if(data.getCTFData(arenaNum).getBlueTaken() == true) {
+				block = flagLoc.blueDroppedLocation(arenaName).getBlock();
+				block.setType(Material.AIR);
+				flagData.getBlueFlag(arenaName);
+				main.getConfig().set("Arenas." + arenaName + ".blue.flag.dropped location", null);
+			}
+
 			//stop the timer
 			time.stopTimer(arenaName, TimerType.GAME);
+			time.stopTimer(arenaName, TimerType.BLUE);
+			time.stopTimer(arenaName, TimerType.RED);
+			time.stopTimer(arenaName, TimerType.LOBBY);
 
 			//set red and blue scores to 0
 			data.getCTFData(arenaNum).setRedScore(0);
@@ -137,6 +165,9 @@ public class ArenaState {
 
 			//change the arena state and save the config
 			data.setState(arenaName, "waiting for players");
+			
+			JoinSign sign = new JoinSign();
+			sign.updateSign(arenaName);
 		}
 	}
 
@@ -154,19 +185,19 @@ public class ArenaState {
 			player = Bukkit.getPlayer(playerID);
 
 			if(count % 2 == 0){
-				
+
 				player.teleport(data.getCTFData(arenaNum).getRedSpawn(arenaName));
 				data.getCTFData(arenaNum).joinRedTeam(player);
-				
+
 				kit.getDefault(arenaName, player);
-				
+
 			} else {
-				
+
 				player.teleport(data.getCTFData(arenaNum).getBlueSpawn(arenaName));
 				data.getCTFData(arenaNum).joinBlueTeam(player);
-				
+
 				kit.getDefault(arenaName, player);
-				
+
 			}
 
 		}

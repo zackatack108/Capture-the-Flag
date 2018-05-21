@@ -13,13 +13,13 @@ import mc.cyberplex.CaptureTheFlag.Main;
 public class CTFData {
 
 	static Main main = Main.getMain();
-	
+
 	public BukkitTask Timer = null;
 	public BukkitTask blueTimer = null;
 	public BukkitTask redTimer = null;
 
 	private int redScore = 0, blueScore = 0;
-	private int blueTime = 60, redTime = 60;
+	private int blueSeconds = 0, redSeconds = 0, blueMinutes = 0, redMinutes = 0;
 
 	private String scoreMsg = " ", flagMsg = " ";
 
@@ -51,31 +51,39 @@ public class CTFData {
 	//--------------------------------------------
 	//classes to leave to the red and blue teams
 	//--------------------------------------------
-	public void leaveRedTeam(Player player) {
-		
+	public void leaveRedTeam(Player player){
+
 		if(player != null && redTeam.isEmpty() == false) {
 			redTeam.remove(player.getUniqueId());
 		}
-		
+
 	}
-	
-	public void leaveBlueTeam(Player player) {
-		
+
+	public void leaveBlueTeam(Player player){
+
 		if(player != null && blueTeam.isEmpty() == false) {
 			blueTeam.remove(player.getUniqueId());
 		}
-		
+
 	}
 
 	//--------------------------------------------
 	//setters for class
 	//--------------------------------------------
-	public void setRedFlagTime(int time){
-		redTime = time;
+	public void setRedFlagSeconds(int sec){
+		redSeconds = sec;
 	}
 
-	public void setBlueFlagTime(int time){
-		blueTime = time;
+	public void setBlueFlagSeconds(int sec){
+		blueSeconds = sec;
+	}
+
+	public void setRedFlagMinutes(int min){
+		redMinutes = min;
+	}
+
+	public void setBlueFlagMinutes(int min){
+		blueMinutes = min;
 	}
 
 	public void setScoreMsg(String msg){
@@ -199,12 +207,20 @@ public class CTFData {
 		return blueTeam.size();
 	}
 
-	public int getRedFlagTime(){
-		return redTime;
+	public int getRedFlagSeconds(){
+		return redSeconds;
 	}
 
-	public int getBlueFlagTime(){
-		return blueTime;
+	public int getBlueFlagSeconds(){
+		return blueSeconds;
+	}
+
+	public int getRedFlagMinutes(){
+		return redMinutes;
+	}
+
+	public int getBlueFlagMinutes(){
+		return blueMinutes;
 	}
 
 	public String getScoreMsg(){

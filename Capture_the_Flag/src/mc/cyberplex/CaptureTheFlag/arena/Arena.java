@@ -46,6 +46,8 @@ public class Arena {
 
 				Set<String> tempArenas = main.getConfig().getConfigurationSection("Arenas").getKeys(false);
 				String [] name = new String[tempArenas.size()];
+				
+				tempArenas.toArray(name);
 
 				for(int i = 0; i < tempArenas.size(); i++) {				
 					arenaNames.add(name[i]);
@@ -67,7 +69,6 @@ public class Arena {
 
 			//save arena to the config
 			main.getConfig().set("Arenas." + name, name);
-			main.getConfig().set("Arenas." + name + ".time", 30);
 			main.getConfig().set("Arenas." + name + ".min", 2);
 			main.getConfig().set("Arenas." + name + ".max", 4);
 			main.getConfig().set("Arenas." + name + ".state", "waiting for players");
@@ -390,8 +391,8 @@ public class Arena {
 
 		if(index < 0 || index > arenaNames.size())
 			return null;
-		if(arenaData.get(index).equals(null)) {
-			ctfData.add(index, new CTFData());
+		if(arenaData.size() <= index) {
+			arenaData.add(index, new Arena());
 		}
 
 		return arenaData.get(index);
@@ -401,7 +402,7 @@ public class Arena {
 		
 		if(index < 0 || index > arenaNames.size())
 			return null;
-		if(ctfData.get(index).equals(null)) {
+		if(ctfData.size() <= index) {
 			ctfData.add(index, new CTFData());
 		}
 

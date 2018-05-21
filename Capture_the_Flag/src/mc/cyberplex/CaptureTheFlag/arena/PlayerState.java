@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import mc.cyberplex.CaptureTheFlag.Main;
+import mc.cyberplex.CaptureTheFlag.listeners.JoinSign;
 
 public class PlayerState {
 
@@ -14,7 +15,6 @@ public class PlayerState {
 	PlayerList getPlayerList = new PlayerList();
 	FlagLocation flag = new FlagLocation();
 	Main main = Main.getMain();
-
 	String state;
 
 	FileConfiguration config = main.getConfig();
@@ -48,6 +48,9 @@ public class PlayerState {
 			data.getArena(arenaNum).addPlayer(player);
 
 			arenaState.waiting(arenaName);
+			
+			JoinSign sign = new JoinSign();
+			sign.updateSign(arenaName);
 
 		}
 
@@ -60,76 +63,92 @@ public class PlayerState {
 
 		//get the minimum number of players for arena
 		int minPlayers = data.getMinPlayers(arenaName);
-
 		int arenaNum = data.getArenaNum(arenaName);
+		boolean inGame = false;
 
-		//------------------------------------------------------------------------------------------|
-		//remove player from red team if they are on red team										|
-		//------------------------------------------------------------------------------------------|
-		for(int count = 0; count < data.getCTFData(arenaNum).getRedTeamCount(); count++) {
+		for(int subscript = 0; subscript < data.getArena(arenaNum).getGameCount(); subscript++){
 
-			if(data.getCTFData(arenaNum).getPlayerOnRedTeam(count).equals(player.getUniqueId())) {
-
-				if(data.getCTFData(arenaNum).getHasBlueFlag() != null && data.getCTFData(arenaNum).getHasBlueFlag().equals(player.getUniqueId())) {
-					flag.blueDropped(arenaName, player);
-					data.getCTFData(arenaNum).setHasBlueFlag(null);
-				}
-
-				data.getCTFData(arenaNum).leaveRedTeam(player);
+			//check to see if the player is in a game
+			if(player.getUniqueId().equals(data.getArena(arenaNum).getPlayer(subscript))) {
+				inGame = true;
 			}
 
 		}
 
-		//------------------------------------------------------------------------------------------|
-		//remove player from blue team if they are on blue team										|
-		//------------------------------------------------------------------------------------------|
-		for(int count = 0; count < data.getCTFData(arenaNum).getBlueTeamCount(); count++) {
+		if(inGame == true) {
 
-			if(data.getCTFData(arenaNum).getPlayerOnBlueTeam(count).equals(player.getUniqueId())) {
+			//------------------------------------------------------------------------------------------|
+			//remove player from red team if they are on red team										|
+			//------------------------------------------------------------------------------------------|
+			for(int count = 0; count < data.getCTFData(arenaNum).getRedTeamCount(); count++) {
 
-				if(data.getCTFData(arenaNum).getHasRedFlag() != null && data.getCTFData(arenaNum).getHasRedFlag().equals(player.getUniqueId())) {
-					flag.redDropped(arenaName, player);
-					data.getCTFData(arenaNum).setHasRedFlag(null);
+				if(data.getCTFData(arenaNum).getPlayerOnRedTeam(count).equals(player.getUniqueId())) {
+
+					if(data.getCTFData(arenaNum).getHasBlueFlag() != null && data.getCTFData(arenaNum).getHasBlueFlag().equals(player.getUniqueId())) {
+						flag.blueDropped(arenaName, player);
+						data.getCTFData(arenaNum).setHasBlueFlag(null);
+					}
+
+					data.getCTFData(arenaNum).leaveRedTeam(player);
 				}
 
-				data.getCTFData(arenaNum).leaveBlueTeam(player);
 			}
 
-		}
+			//------------------------------------------------------------------------------------------|
+			//remove player from blue team if they are on blue team										|
+			//------------------------------------------------------------------------------------------|
+			for(int count = 0; count < data.getCTFData(arenaNum).getBlueTeamCount(); count++) {
 
-		//------------------------------------------------------------------------------------------|
-		//remove player from the arena																|
-		//------------------------------------------------------------------------------------------|
-		data.getArena(arenaNum).removePlayer(player);
+				if(data.getCTFData(arenaNum).getPlayerOnBlueTeam(count).equals(player.getUniqueId())) {
 
-		//------------------------------------------------------------------------------------------|
-		//return player to hub																		|
-		//------------------------------------------------------------------------------------------|
+					if(data.getCTFData(arenaNum).getHasRedFlag() != null && data.getCTFData(arenaNum).getHasRedFlag().equals(player.getUniqueId())) {
+						flag.redDropped(arenaName, player);
+						data.getCTFData(arenaNum).setHasRedFlag(null);
+					}
 
-		//gives player an empty scoreboard
-		player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+					data.getCTFData(arenaNum).leaveBlueTeam(player);
+				}
 
-		//teleport player to the hub
-		player.teleport(data.getHub());
+			}
 
-		//Send player a message saying they are leaving the arena and are being teleported to the hub
-		player.sendMessage(ChatColor.YELLOW + "Leaving CTF arena");
-		player.sendMessage(ChatColor.YELLOW + "Sending you to the Capture the Flags hub.");		
+			//------------------------------------------------------------------------------------------|
+			//remove player from the arena																|
+			//------------------------------------------------------------------------------------------|
+			data.getArena(arenaNum).removePlayer(player);
 
-		//return inventory to player
-		Arena.returnInventory(player);
+			//------------------------------------------------------------------------------------------|
+			//return player to hub																		|
+			//------------------------------------------------------------------------------------------|
 
-		//------------------------------------------------------------------------------------------|
-		//check if the game count is less then min while the game is running and stop the game		|
-		//------------------------------------------------------------------------------------------|
-		if(data.getArena(arenaNum).getGameCount() < minPlayers && gameState.equalsIgnoreCase("running")) {
-			arenaState.stop(arenaName);
-		} else if(gameState.equalsIgnoreCase("running")) {
-			//Calls the getPlayerGame class to load the game scoreboard
-			getPlayerList.getPlayer(arenaName, Message.GAME);
-		} else if(gameState.equalsIgnoreCase("waiting for players")) {
-			//Calls the getPlayerGame class to load the lobby scoreboard
-			getPlayerList.getPlayer(arenaName, Message.LOBBY);
+			//gives player an empty scoreboard
+			player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+
+			//teleport player to the hub
+			player.teleport(data.getHub());
+
+			//Send player a message saying they are leaving the arena and are being teleported to the hub
+			player.sendMessage(ChatColor.YELLOW + "Leaving CTF arena");
+			player.sendMessage(ChatColor.YELLOW + "Sending you to the Capture the Flags hub.");		
+
+			//return inventory to player
+			Arena.returnInventory(player);
+
+			//------------------------------------------------------------------------------------------|
+			//check if the game count is less then min while the game is running and stop the game		|
+			//------------------------------------------------------------------------------------------|
+			if(data.getArena(arenaNum).getGameCount() < minPlayers && gameState.equalsIgnoreCase("running")) {
+				arenaState.stop(arenaName);
+			} else if(gameState.equalsIgnoreCase("running")) {
+				//Calls the getPlayerGame class to load the game scoreboard
+				getPlayerList.getPlayer(arenaName, Message.GAME);
+			} else if(gameState.equalsIgnoreCase("waiting for players")) {
+				//Calls the getPlayerGame class to load the lobby scoreboard
+				getPlayerList.getPlayer(arenaName, Message.LOBBY);
+				
+				JoinSign sign = new JoinSign();
+				sign.updateSign(arenaName);
+			}
+			
 		}
 
 	}

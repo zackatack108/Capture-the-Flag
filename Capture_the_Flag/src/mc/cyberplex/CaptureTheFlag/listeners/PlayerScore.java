@@ -7,6 +7,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import mc.cyberplex.CaptureTheFlag.Main;
+import mc.cyberplex.CaptureTheFlag.Timer.Timer;
+import mc.cyberplex.CaptureTheFlag.Timer.TimerType;
 import mc.cyberplex.CaptureTheFlag.arena.Arena;
 import mc.cyberplex.CaptureTheFlag.arena.FlagData;
 import mc.cyberplex.CaptureTheFlag.arena.FlagLocation;
@@ -15,13 +17,14 @@ import mc.cyberplex.CaptureTheFlag.arena.PlayerList;
 import mc.cyberplex.CaptureTheFlag.kits.Kits;
 
 public class PlayerScore implements Listener {
-	
+
 	Main main = Main.getMain();
 	Arena data = new Arena();
 	FlagLocation flagLocation = new FlagLocation();
 	FlagData flagData = new FlagData();
 	PlayerList playerList = new PlayerList();
 	Kits kit = new Kits();
+	Timer time = new Timer();
 
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event){
@@ -42,13 +45,19 @@ public class PlayerScore implements Listener {
 					inGame = true;
 				}
 
-				//player is in game
-				if(inGame == true) {
+			}
 
-					boolean redTaken = data.getCTFData(arenaNum).getRedTaken();
-					boolean blueTaken = data.getCTFData(arenaNum).getBlueTaken();
+			//player is in game
+			if(inGame == true) {
 
-					if(player.getUniqueId().equals(data.getCTFData(arenaNum).getPlayerOnRedTeam(subscript)) && player.getUniqueId().equals(data.getCTFData(arenaNum).getHasBlueFlag())) { //check to see if player is on red team
+				boolean redTaken = data.getCTFData(arenaNum).getRedTaken();
+				boolean blueTaken = data.getCTFData(arenaNum).getBlueTaken();
+
+				//cycle through red team to see if player is on red
+				for(int subscript = 0; subscript < data.getCTFData(arenaNum).getRedTeamCount(); subscript++) {
+
+					//check if player is on red team
+					if(player.getUniqueId().equals(data.getCTFData(arenaNum).getPlayerOnRedTeam(subscript))) {
 
 						//check to see if the flag is missing
 						if(redTaken == true && player.getUniqueId().equals(data.getCTFData(arenaNum).getHasBlueFlag()) && player.getLocation().getBlock().equals(flagLocation.redFlagSpawn(arenaName).getBlock())) {
@@ -57,7 +66,7 @@ public class PlayerScore implements Listener {
 
 						} else { //score the flag
 
-							if(player.getLocation().getBlock().equals(flagLocation.redFlagSpawn(arenaName).getBlock())){
+							if(player.getUniqueId().equals(data.getCTFData(arenaNum).getHasBlueFlag()) && player.getLocation().getBlock().equals(flagLocation.redFlagSpawn(arenaName).getBlock())){
 
 								player.getInventory().clear();
 
@@ -71,13 +80,25 @@ public class PlayerScore implements Listener {
 								int redScore = data.getCTFData(arenaNum).getRedScore();
 								data.getCTFData(arenaNum).setRedScore(++redScore);
 
+								time.stopTimer(arenaName, TimerType.BLUE);
+								time.blueFlagTime(arenaName, 0, 0);
+								time.stopTimer(arenaName, TimerType.BLUE);
+								
 								playerList.getPlayer(arenaName, Message.GAME);
 
 							}
 
 						}
 
-					} else if(player.getUniqueId().equals(data.getCTFData(arenaNum).getPlayerOnBlueTeam(subscript))	&& player.getUniqueId().equals(data.getCTFData(arenaNum).getHasRedFlag())){ //check to see if player is on blue team
+					}					
+
+				}
+
+				//cycle through blue team to see if player is on blue
+				for(int subscript = 0; subscript < data.getCTFData(arenaNum).getBlueTeamCount(); subscript++) {
+
+					//check if player is on blue team
+					if(player.getUniqueId().equals(data.getCTFData(arenaNum).getPlayerOnBlueTeam(subscript))) {
 
 						//check to see if the flag is missing
 						if(blueTaken == true && player.getUniqueId().equals(data.getCTFData(arenaNum).getHasRedFlag()) && player.getLocation().getBlock().equals(flagLocation.blueFlagSpawn(arenaName).getBlock())){
@@ -86,7 +107,7 @@ public class PlayerScore implements Listener {
 
 						} else { //score the flag
 
-							if(player.getLocation().getBlock().equals(flagLocation.blueFlagSpawn(arenaName).getBlock())){
+							if(player.getUniqueId().equals(data.getCTFData(arenaNum).getHasRedFlag()) && player.getLocation().getBlock().equals(flagLocation.blueFlagSpawn(arenaName).getBlock())){
 
 								player.getInventory().clear();
 
@@ -99,6 +120,10 @@ public class PlayerScore implements Listener {
 
 								int blueScore = data.getCTFData(arenaNum).getBlueScore();
 								data.getCTFData(arenaNum).setBlueScore(++blueScore);
+								
+								time.stopTimer(arenaName, TimerType.RED);
+								time.redFlagTime(arenaName, 0, 0);
+								time.stopTimer(arenaName, TimerType.RED);
 
 								playerList.getPlayer(arenaName, Message.GAME);
 							}

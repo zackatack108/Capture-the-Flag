@@ -47,7 +47,7 @@ public class Scoreboards {
 		//set up the time 
 		time.addEntry(ChatColor.GREEN.toString());
 		time.setPrefix(ChatColor.GREEN + "Time: ");
-		time.setSuffix(ChatColor.WHITE + Integer.toString(data.getArena(arenaNum).getMinutes()) + ":" + Integer.toString(data.getArena(arenaNum).getSeconds()));	
+		time.setSuffix(ChatColor.WHITE + addPadding(2, Integer.toString(data.getArena(arenaNum).getMinutes())) + ":" + addPadding(2,Integer.toString(data.getArena(arenaNum).getSeconds())));	
 
 		Score arena = lobbyObjective.getScore(ChatColor.YELLOW + "Arena: " + ChatColor.WHITE + arenaName.substring(0,1).toUpperCase() + arenaName.substring(1));
 		Score blank = lobbyObjective.getScore("  ");
@@ -85,7 +85,7 @@ public class Scoreboards {
 		
 		redFlagReturn.addEntry(ChatColor.DARK_RED.toString());
 		redFlagReturn.setPrefix(ChatColor.RED + "Flag Return: ");
-		redFlagReturn.setSuffix(ChatColor.WHITE + Integer.toString(data.getCTFData(arenaNum).getRedFlagTime()));
+		redFlagReturn.setSuffix(ChatColor.WHITE + addPadding(2, Integer.toString(data.getCTFData(arenaNum).getRedFlagMinutes())) + ":" + addPadding(2,Integer.toString(data.getCTFData(arenaNum).getRedFlagSeconds())));
 		gameObjective.getScore(ChatColor.DARK_RED.toString()).setScore(6);
 		
 		blank2.setScore(5);		
@@ -97,18 +97,30 @@ public class Scoreboards {
 		
 		blueFlagReturn.addEntry(ChatColor.DARK_BLUE.toString());
 		blueFlagReturn.setPrefix(ChatColor.BLUE + "Flag Return: ");
-		blueFlagReturn.setSuffix(ChatColor.WHITE + Integer.toString(data.getCTFData(arenaNum).getBlueFlagTime()));
+		blueFlagReturn.setSuffix(ChatColor.WHITE + addPadding(2, Integer.toString(data.getCTFData(arenaNum).getBlueFlagMinutes())) + ":" + addPadding(2,Integer.toString(data.getCTFData(arenaNum).getBlueFlagSeconds())));
 		gameObjective.getScore(ChatColor.DARK_BLUE.toString()).setScore(3);
 		
 		blank3.setScore(2);
 		
 		time.addEntry(ChatColor.GREEN.toString());
 		time.setPrefix(ChatColor.GREEN + "Time: ");
-		time.setSuffix(ChatColor.WHITE + Integer.toString(data.getArena(arenaNum).getMinutes()) + ":" + Integer.toString(data.getArena(arenaNum).getSeconds()));
+		time.setSuffix(ChatColor.WHITE + addPadding(2,Integer.toString(data.getArena(arenaNum).getMinutes())) + ":" + addPadding(2,Integer.toString(data.getArena(arenaNum).getSeconds())));
 		gameObjective.getScore(ChatColor.GREEN.toString()).setScore(1);
 		
 		player.setScoreboard(board);
 		
+	}
+	
+	public String addPadding(int length, String text) {
+		
+		StringBuilder sb = new StringBuilder();
+		
+		for(int i = length - text.length(); i > 0; i--) {
+			sb.append('0');
+		}
+		
+		sb.append(text);
+		return sb.toString();		
 	}
 	
 }
