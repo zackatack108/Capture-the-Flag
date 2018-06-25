@@ -2,6 +2,8 @@ package mc.cyberplex.CaptureTheFlag.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -48,14 +50,14 @@ public class PlayerDeath implements Listener {
 
 					if(player.getUniqueId().equals(data.getArena(arenaNum).getPlayer(subscript))) {
 						inGame = true;
-						
+
 						player.getInventory().clear();
 						event.getDrops().clear();
 						player.setHealth(20);
 						player.setFoodLevel(20);
 						player.setFireTicks(0);
 						player.setGameMode(GameMode.SPECTATOR);
-						
+
 					}
 
 				}
@@ -73,7 +75,14 @@ public class PlayerDeath implements Listener {
 
 							//check if the player that died was holding the blue flag
 							if(blueTaken == true && player.getUniqueId().equals(data.getCTFData(arenaNum).getHasBlueFlag())) {
-								
+
+								if(player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.AIR) {
+
+									double y = player.getLocation().getY();
+									player.getLocation().setY(--y);
+
+								}
+
 								time.stopTimer(arenaName, TimerType.BLUE);
 								time.stopTimer(arenaName, TimerType.BLUE);
 
@@ -102,7 +111,14 @@ public class PlayerDeath implements Listener {
 
 							//check if the player that died was holding the red flag
 							if(redTaken == true && player.getUniqueId().equals(data.getCTFData(arenaNum).getHasRedFlag())) {
-								
+
+								if(player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.AIR) {
+
+									double y = player.getLocation().getY();
+									player.getLocation().setY(--y);
+
+								}
+
 								time.stopTimer(arenaName, TimerType.RED);
 								time.stopTimer(arenaName, TimerType.RED);
 
@@ -121,13 +137,13 @@ public class PlayerDeath implements Listener {
 						}
 
 					}
-					
+
 				}
-				
+
 			}
-			
+
 		}
-		
+
 	}
 
 	public void onRespawn(Player player) {
@@ -229,9 +245,9 @@ public class PlayerDeath implements Listener {
 				}
 
 			}
-			
+
 		}
-		
+
 	}
 
 }

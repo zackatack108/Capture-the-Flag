@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
+import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
@@ -19,22 +20,16 @@ public class Scoreboards {
 	
 	Set<String> arenas = plugin.getConfig().getConfigurationSection("Arenas").getKeys(false);
 	Arena data = new Arena();
-
-	ScoreboardManager manager = Bukkit.getScoreboardManager();
-	org.bukkit.scoreboard.Scoreboard board = manager.getNewScoreboard();
-
-	Team time = board.registerNewTeam("Time");
-	Team playerCount = board.registerNewTeam("Player Count");
 	
-	Team red = board.registerNewTeam("Red");
-	Team redFlagReturn = board.registerNewTeam("Red Flag Return");
-	Team blue = board.registerNewTeam("Blue");
-	Team blueFlagReturn = board.registerNewTeam("Blue Flag Return");
-
-	Objective lobbyObjective = board.registerNewObjective("Lobby", "dummy");
-	Objective gameObjective = board.registerNewObjective("Game", "dummy");
-
-	public void lobbyBoard(int arenaNum, Player player, String arenaName){
+	public void lobbyBoard(int arenaNum, Player player, String arenaName) {
+		
+		ScoreboardManager manager = Bukkit.getScoreboardManager();
+		Scoreboard board = manager.getNewScoreboard();		
+		
+		Team playerCount = board.registerNewTeam("Player Count");
+		Team time = board.registerNewTeam("Time");
+		
+		Objective lobbyObjective = board.registerNewObjective("Lobby", "dummy");
 
 		lobbyObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
 		lobbyObjective.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Capture The Flag");
@@ -65,7 +60,18 @@ public class Scoreboards {
 		
 	}
 	
-	public void gameBoard(int arenaNum, Player player, String arenaName){
+	public void gameBoard(int arenaNum, Player player, String arenaName) {
+		
+		ScoreboardManager manager = Bukkit.getScoreboardManager();
+		Scoreboard board = manager.getNewScoreboard();
+		
+		Team red = board.registerNewTeam("Red");
+		Team redFlagReturn = board.registerNewTeam("Red Flag Return");
+		Team blue = board.registerNewTeam("Blue");
+		Team blueFlagReturn = board.registerNewTeam("Blue Flag Return");
+		Team time = board.registerNewTeam("Time");
+		
+		Objective gameObjective = board.registerNewObjective("Game", "dummy");
 		
 		gameObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
 		gameObjective.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Capture The Flag");	
@@ -121,6 +127,27 @@ public class Scoreboards {
 		
 		sb.append(text);
 		return sb.toString();		
+	}
+
+	public void updateLobby(int arenaNum, Player player, String arenaName) {
+		
+		Scoreboard board = player.getScoreboard();
+		
+		board.getTeam("Player Count").setSuffix(ChatColor.WHITE + Integer.toString(data.getArena(arenaNum).getGameCount()));
+		board.getTeam("Time").setSuffix(ChatColor.WHITE + addPadding(2, Integer.toString(data.getArena(arenaNum).getMinutes())) + ":" + addPadding(2,Integer.toString(data.getArena(arenaNum).getSeconds())));
+		
+	}
+	
+	public void updateGame(int arenaNum, Player player, String arenaName) {
+		
+		Scoreboard board = player.getScoreboard();
+		
+		board.getTeam("Red").setSuffix(ChatColor.WHITE + Integer.toString(data.getCTFData(arenaNum).getRedScore()));
+		board.getTeam("Red Flag Return").setSuffix(ChatColor.WHITE + addPadding(2, Integer.toString(data.getCTFData(arenaNum).getRedFlagMinutes())) + ":" + addPadding(2,Integer.toString(data.getCTFData(arenaNum).getRedFlagSeconds())));
+		board.getTeam("Blue").setSuffix(ChatColor.WHITE + Integer.toString(data.getCTFData(arenaNum).getBlueScore()));
+		board.getTeam("Blue Flag Return").setSuffix(ChatColor.WHITE + addPadding(2, Integer.toString(data.getCTFData(arenaNum).getBlueFlagMinutes())) + ":" + addPadding(2,Integer.toString(data.getCTFData(arenaNum).getBlueFlagSeconds())));
+		board.getTeam("Time").setSuffix(ChatColor.WHITE + addPadding(2,Integer.toString(data.getArena(arenaNum).getMinutes())) + ":" + addPadding(2,Integer.toString(data.getArena(arenaNum).getSeconds())));
+		
 	}
 	
 }

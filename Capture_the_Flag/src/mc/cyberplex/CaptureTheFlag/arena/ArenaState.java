@@ -6,8 +6,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffectType;
 
 import mc.cyberplex.CaptureTheFlag.Main;
+import mc.cyberplex.CaptureTheFlag.Scoreboards;
 import mc.cyberplex.CaptureTheFlag.Timer.Timer;
 import mc.cyberplex.CaptureTheFlag.Timer.TimerType;
 import mc.cyberplex.CaptureTheFlag.kits.Kits;
@@ -118,12 +120,14 @@ public class ArenaState {
 
 				//assign the playerID to the UUID of the user in the game
 				playerID = data.getArena(arenaNum).getPlayer(0);
-
-				//get the player from the UUID
 				player = Bukkit.getPlayer(playerID);
 
 				PlayerState playerState = new PlayerState();
 				playerState.leaveGame(arenaName, player);
+				
+				player.removePotionEffect(PotionEffectType.INVISIBILITY);
+				player.setHealth(20);
+				player.setFireTicks(0);
 
 			}
 
@@ -183,6 +187,9 @@ public class ArenaState {
 
 			playerID = data.getArena(arenaNum).getPlayer(count);
 			player = Bukkit.getPlayer(playerID);
+			
+			Scoreboards board = new Scoreboards();
+			board.gameBoard(arenaNum, player, arenaName);
 
 			if(count % 2 == 0){
 

@@ -31,10 +31,10 @@ public class PlayerList {
 				
 				if(msg == Message.LOBBY){
 					board[arenaNum] = new Scoreboards();
-					board[arenaNum].lobbyBoard(arenaNum, player, arenaName);
+					board[arenaNum].updateLobby(arenaNum, player, arenaName);
 				} else if(msg == Message.GAME){
 					board[arenaNum] = new Scoreboards();
-					board[arenaNum].gameBoard(arenaNum, player, arenaName);
+					board[arenaNum].updateGame(arenaNum, player, arenaName);
 				} else if(msg == Message.FLAG){
 					player.sendMessage(data.getCTFData(arenaNum).getFlagMsg());
 				}

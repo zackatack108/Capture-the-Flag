@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import mc.cyberplex.CaptureTheFlag.Main;
+import mc.cyberplex.CaptureTheFlag.Scoreboards;
 import mc.cyberplex.CaptureTheFlag.listeners.JoinSign;
 
 public class PlayerState {
@@ -51,6 +52,9 @@ public class PlayerState {
 			int arenaNum = data.getArenaNum(arenaName);
 
 			data.getArena(arenaNum).addPlayer(player);
+			
+			Scoreboards board = new Scoreboards();
+			board.lobbyBoard(arenaNum, player, arenaName);
 
 			arenaState.waiting(arenaName);
 			

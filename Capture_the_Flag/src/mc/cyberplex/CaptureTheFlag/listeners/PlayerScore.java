@@ -26,12 +26,14 @@ public class PlayerScore implements Listener {
 	PlayerList playerList = new PlayerList();
 	Kits kit = new Kits();
 	Timer time = new Timer();
+	
+	private final int MAXSCORE = 5;
 
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event){
 
 		Player player = event.getPlayer();
-		boolean inGame = false;
+		boolean inGame = false;	
 
 		//cycle through the arena list
 		for(String arenaName: main.getConfig().getConfigurationSection("Arenas").getKeys(false)){
@@ -87,8 +89,8 @@ public class PlayerScore implements Listener {
 								
 								playerList.getPlayer(arenaName, Message.GAME);
 								
-								//check to see if the score is 10 if it is end the game
-								if(data.getCTFData(arenaNum).getRedScore() == 10) {
+								//check to see if the score is 5 if it is end the game
+								if(data.getCTFData(arenaNum).getRedScore() == MAXSCORE) {
 									
 									ArenaState state = new ArenaState();
 									state.stop(arenaName);
@@ -136,8 +138,8 @@ public class PlayerScore implements Listener {
 
 								playerList.getPlayer(arenaName, Message.GAME);
 								
-								//check if blue score is 10 and end the game
-								if(data.getCTFData(arenaNum).getBlueScore() == 10) {
+								//check if blue score is 5 and end the game
+								if(data.getCTFData(arenaNum).getBlueScore() == MAXSCORE) {
 									
 									ArenaState state = new ArenaState();
 									state.stop(arenaName);
