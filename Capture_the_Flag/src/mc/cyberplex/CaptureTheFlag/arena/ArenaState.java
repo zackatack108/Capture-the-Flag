@@ -3,6 +3,7 @@ package mc.cyberplex.CaptureTheFlag.arena;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -125,6 +126,7 @@ public class ArenaState {
 				PlayerState playerState = new PlayerState();
 				playerState.leaveGame(arenaName, player);
 				
+				player.setGameMode(GameMode.SURVIVAL);
 				player.removePotionEffect(PotionEffectType.INVISIBILITY);
 				player.setHealth(20);
 				player.setFireTicks(0);

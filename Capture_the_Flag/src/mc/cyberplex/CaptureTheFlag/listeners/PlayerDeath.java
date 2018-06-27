@@ -177,26 +177,34 @@ public class PlayerDeath implements Listener {
 							@Override
 							public void run() {
 
-								player.sendMessage(ChatColor.YELLOW + "Respawning in " + Integer.toString(seconds) + " second(s)");
-
-								if(this.seconds == 0) {
-
-									player.setGameMode(GameMode.SURVIVAL);
-									player.getInventory().clear();
-									player.teleport(data.getCTFData(arenaNum).getRedSpawn(arenaName));
-									kit.getDefault(arenaName, player);
-									player.setHealth(20);
-									player.setFoodLevel(20);
-									player.setFireTicks(0);
-									player.removePotionEffect(PotionEffectType.INVISIBILITY);
-
+								if(data.getState(arenaName).equalsIgnoreCase("stopping")) {
 									cancel();
+								} else {
+
+									if(this.seconds == 0 && data.getState(arenaName).equalsIgnoreCase("running")) {
+
+										player.setGameMode(GameMode.SURVIVAL);
+										player.getInventory().clear();
+										player.teleport(data.getCTFData(arenaNum).getRedSpawn(arenaName));
+										kit.getDefault(arenaName, player);
+										player.setHealth(20);
+										player.setFoodLevel(20);
+										player.setFireTicks(0);
+										player.setFallDistance(0);
+										player.removePotionEffect(PotionEffectType.INVISIBILITY);
+
+										cancel();
+
+									} else if(data.getState(arenaName).equalsIgnoreCase("waiting for players")) {
+										cancel();
+									}
+
+									this.seconds--;
 
 								}
 
-								this.seconds--;
-
 							}
+
 
 						}.runTaskTimer(main, 0, 20);
 
@@ -217,24 +225,31 @@ public class PlayerDeath implements Listener {
 							@Override
 							public void run(){
 
-								player.sendMessage(ChatColor.YELLOW + "Respawning in " + Integer.toString(seconds) + " second(s)");
+								if(data.getState(arenaName).equalsIgnoreCase("stopping")) {
+									cancel();
+								} else {
 
-								if(this.seconds == 0){
+									if(this.seconds == 0 && data.getState(arenaName).equalsIgnoreCase("running")){
 
-									player.setGameMode(GameMode.SURVIVAL);
-									player.getInventory().clear();
-									player.teleport(data.getCTFData(arenaNum).getBlueSpawn(arenaName));
-									kit.getDefault(arenaName, player);
-									player.removePotionEffect(PotionEffectType.INVISIBILITY);
-									player.setHealth(20);
-									player.setFoodLevel(20);
-									player.setFireTicks(0);
+										player.setGameMode(GameMode.SURVIVAL);
+										player.getInventory().clear();
+										player.teleport(data.getCTFData(arenaNum).getBlueSpawn(arenaName));
+										kit.getDefault(arenaName, player);
+										player.removePotionEffect(PotionEffectType.INVISIBILITY);
+										player.setHealth(20);
+										player.setFoodLevel(20);
+										player.setFireTicks(0);
+										player.setFallDistance(0);
 
-									cancel();	
+										cancel();	
+
+									} else if(data.getState(arenaName).equalsIgnoreCase("waiting for players")){
+										cancel();										
+									}
+
+									this.seconds--;
 
 								}
-
-								this.seconds--;
 
 							}
 

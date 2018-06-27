@@ -561,6 +561,16 @@ public class Arena {
 
 		return shopCount;		
 	}
+	
+	public String getState(String arenaName) {
+		
+		if(arenaName != null && main.getConfig().contains("Arenas." + arenaName)) {
+			return main.getConfig().getString("Arenas." + arenaName + ".state");			
+		} else {
+			return null;
+		}
+		
+	}
 
 	//------------------------------------
 	//Inventory methods to save and return
