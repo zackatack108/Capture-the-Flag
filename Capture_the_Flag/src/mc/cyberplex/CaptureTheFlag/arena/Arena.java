@@ -59,6 +59,11 @@ public class Arena {
 		}
 
 	}
+	
+	public void emptyArenaData(int index) {
+		arenaData.set(index, new Arena());
+		ctfData.set(index, new CTFData());
+	}
 
 	//----------------------------------------------
 	//Class adders will add players, arena and spawn

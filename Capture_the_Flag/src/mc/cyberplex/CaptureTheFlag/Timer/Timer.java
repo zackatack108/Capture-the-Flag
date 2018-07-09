@@ -71,7 +71,6 @@ public class Timer {
 					}
 				}
 
-
 				data.getArena(arenaNum).setSeconds(--seconds);
 
 			}
@@ -116,7 +115,7 @@ public class Timer {
 					}
 				}
 
-				if(seconds == 30) {
+				if(seconds % 4 == 0) {
 
 					for(int count = 0; count < data.getArena(arenaNum).getGameCount(); count++) {
 

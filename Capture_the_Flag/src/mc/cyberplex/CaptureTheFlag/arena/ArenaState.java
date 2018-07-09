@@ -3,17 +3,15 @@ package mc.cyberplex.CaptureTheFlag.arena;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffectType;
-
 import mc.cyberplex.CaptureTheFlag.Main;
 import mc.cyberplex.CaptureTheFlag.Scoreboards;
 import mc.cyberplex.CaptureTheFlag.Timer.Timer;
 import mc.cyberplex.CaptureTheFlag.Timer.TimerType;
 import mc.cyberplex.CaptureTheFlag.kits.Kits;
+import mc.cyberplex.CaptureTheFlag.kits.enumerations.KitType;
 import mc.cyberplex.CaptureTheFlag.listeners.JoinSign;
 import net.md_5.bungee.api.ChatColor;
 
@@ -51,6 +49,7 @@ public class ArenaState {
 
 	public void start(String arenaName){
 
+		time.stopTimer(arenaName, TimerType.LOBBY);
 		randomize(arenaName);
 
 		flag.getRedFlag(arenaName);
@@ -59,8 +58,7 @@ public class ArenaState {
 		playerList.getPlayer(arenaName, Message.GAME);
 
 		data.setState(arenaName, "running");
-
-		time.stopTimer(arenaName, TimerType.LOBBY);
+		
 		time.arenaTime(arenaName, 20);
 		
 		JoinSign sign = new JoinSign();
@@ -125,11 +123,6 @@ public class ArenaState {
 
 				PlayerState playerState = new PlayerState();
 				playerState.leaveGame(arenaName, player);
-				
-				player.setGameMode(GameMode.SURVIVAL);
-				player.removePotionEffect(PotionEffectType.INVISIBILITY);
-				player.setHealth(20);
-				player.setFireTicks(0);
 
 			}
 
@@ -174,6 +167,8 @@ public class ArenaState {
 			
 			JoinSign sign = new JoinSign();
 			sign.updateSign(arenaName);
+			
+			data.emptyArenaData(arenaNum);
 		}
 	}
 
@@ -182,33 +177,37 @@ public class ArenaState {
 		UUID playerID;
 		Player player;
 
-		int arenaNum = data.getArenaNum(arenaName);
-
-		int inGameTotal = data.getArena(arenaNum).getGameCount();		
-		for(int count = 0; count < inGameTotal; count++){
+		int arenaNum = data.getArenaNum(arenaName);	
+		for(int count = 0; count < data.getArena(arenaNum).getGameCount(); count++){
 
 			playerID = data.getArena(arenaNum).getPlayer(count);
 			player = Bukkit.getPlayer(playerID);
 			
 			Scoreboards board = new Scoreboards();
 			board.gameBoard(arenaNum, player, arenaName);
+			
+			if(data.getCTFData(arenaNum).getPlayerKit(player) == null) {
+				data.getCTFData(arenaNum).addToPlayersKits(KitType.SOLDIER.toString());
+			} else {
+				data.getCTFData(arenaNum).addToPlayersKits(data.getCTFData(arenaNum).getPlayerKit(player));
+			}	
 
 			if(count % 2 == 0){
 
 				player.teleport(data.getCTFData(arenaNum).getRedSpawn(arenaName));
 				data.getCTFData(arenaNum).joinRedTeam(player);
-
-				kit.getDefault(arenaName, player);
+				
+				kit.getKit(arenaName, player);
 
 			} else {
 
 				player.teleport(data.getCTFData(arenaNum).getBlueSpawn(arenaName));
 				data.getCTFData(arenaNum).joinBlueTeam(player);
-
-				kit.getDefault(arenaName, player);
+				
+				kit.getKit(arenaName, player);
 
 			}
-
+			
 		}
 
 	}

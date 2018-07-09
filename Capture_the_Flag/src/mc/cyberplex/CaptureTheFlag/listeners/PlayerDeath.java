@@ -186,7 +186,7 @@ public class PlayerDeath implements Listener {
 										player.setGameMode(GameMode.SURVIVAL);
 										player.getInventory().clear();
 										player.teleport(data.getCTFData(arenaNum).getRedSpawn(arenaName));
-										kit.getDefault(arenaName, player);
+										kit.getKit(arenaName, player);
 										player.setHealth(20);
 										player.setFoodLevel(20);
 										player.setFireTicks(0);
@@ -234,7 +234,7 @@ public class PlayerDeath implements Listener {
 										player.setGameMode(GameMode.SURVIVAL);
 										player.getInventory().clear();
 										player.teleport(data.getCTFData(arenaNum).getBlueSpawn(arenaName));
-										kit.getDefault(arenaName, player);
+										kit.getKit(arenaName, player);
 										player.removePotionEffect(PotionEffectType.INVISIBILITY);
 										player.setHealth(20);
 										player.setFoodLevel(20);

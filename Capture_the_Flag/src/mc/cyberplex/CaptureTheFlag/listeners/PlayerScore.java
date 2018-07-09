@@ -73,7 +73,7 @@ public class PlayerScore implements Listener {
 
 								player.getInventory().clear();
 
-								kit.getDefault(arenaName, player);
+								kit.getKit(arenaName, player);
 
 								flagData.getBlueFlag(arenaName);
 
@@ -122,7 +122,7 @@ public class PlayerScore implements Listener {
 
 								player.getInventory().clear();
 
-								kit.getDefault(arenaName, player);
+								kit.getKit(arenaName, player);
 
 								flagData.getRedFlag(arenaName);
 

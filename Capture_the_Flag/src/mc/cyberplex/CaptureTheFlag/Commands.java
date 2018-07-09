@@ -14,6 +14,7 @@ import mc.cyberplex.CaptureTheFlag.arena.Arena;
 import mc.cyberplex.CaptureTheFlag.arena.ArenaState;
 import mc.cyberplex.CaptureTheFlag.arena.FlagData;
 import mc.cyberplex.CaptureTheFlag.arena.PlayerState;
+import mc.cyberplex.CaptureTheFlag.kits.KitShop;
 
 public class Commands implements CommandExecutor{
 
@@ -55,7 +56,7 @@ public class Commands implements CommandExecutor{
 					if(player.hasPermission("ctf.join")){
 
 						boolean inGame = false;
-						
+
 						//check if the player is currently in a game
 						for(String arena: main.getConfig().getConfigurationSection("Arenas").getKeys(false)){
 
@@ -74,40 +75,40 @@ public class Commands implements CommandExecutor{
 						if(args.length == 2){
 
 							String arenaName = args[1].toLowerCase();
-							
+
 							//check if the arena exist in the config
 							if(main.getConfig().contains("Arenas." + arenaName)) {
-								
+
 								if(inGame == true) {
-									
+
 									player.sendMessage(ChatColor.RED + "Sorry you are currently in a game");
 									player.sendMessage(ChatColor.RED + "Please do " + ChatColor.DARK_RED + "/ctf leave " + ChatColor.RED + "first before joining another arena");
-																		
+
 								} else {									
 									playerState.joinGame(arenaName, player);									
 								}
-								
+
 							} else {
-								
+
 								player.sendMessage(invalidArena);
-								
+
 								//teleport player to the hub
 								player.teleport(data.getHub());
 								player.sendMessage(ChatColor.YELLOW + "Sending you to the Capture the Flags hub.");
-								
+
 							}
 
 						} else if(inGame == false){
-							
+
 							//teleport player to the hub
 							player.teleport(data.getHub());
 							player.sendMessage(ChatColor.YELLOW + "Sending you to the Capture the Flags hub.");
-							
+
 						} else {
-							
+
 							player.sendMessage(ChatColor.RED + "Sorry you are currently in a game");
 							player.sendMessage(ChatColor.RED + "Please do " + ChatColor.DARK_RED + "/ctf leave " + ChatColor.RED + "first before joining another arena");
-							
+
 						}
 
 					} else {
@@ -210,16 +211,16 @@ public class Commands implements CommandExecutor{
 
 							//check if arena name exist in config
 							if(config.contains("Arenas." + args[1].toLowerCase())){
-								
+
 								if(main.getConfig().getString("Arenas." + args[1].toLowerCase() + ".state").equals("running")) {
 
-								state.stop(args[1].toLowerCase());
-								player.sendMessage(ChatColor.GREEN + "CTF arena " + args[1].toLowerCase() + " has been stopped");
-								
+									state.stop(args[1].toLowerCase());
+									player.sendMessage(ChatColor.GREEN + "CTF arena " + args[1].toLowerCase() + " has been stopped");
+
 								} else {
-									
+
 									player.sendMessage(ChatColor.RED + "CTF arena " + args[1].toLowerCase() + " is not running currently");
-									
+
 								}
 
 							} else {
@@ -506,6 +507,7 @@ public class Commands implements CommandExecutor{
 						player.sendMessage(ChatColor.YELLOW + "/ctf remove spawn [Arena] [Team]: " + ChatColor.GRAY + "Remove the team spawn for the arena");
 						player.sendMessage(ChatColor.YELLOW + "/ctf remove flag [Arena] [Team]: " + ChatColor.GRAY + "Remove the team flag for the arena");
 						player.sendMessage(ChatColor.YELLOW + "/ctf remove lobby [Arena]: " + ChatColor.GRAY + "Remove the lobby for the arena");
+						player.sendMessage(ChatColor.YELLOW + "/ctf kits: " + ChatColor.GRAY + "Opens the Capture the Flag kits");
 						player.sendMessage(ChatColor.STRIKETHROUGH + "-----------------------------------------------------");
 
 					} else {
@@ -514,6 +516,33 @@ public class Commands implements CommandExecutor{
 						player.sendMessage(noPermission);
 						player.sendMessage(systemAdmin);
 
+					}
+
+					break;
+
+				case "kits":
+
+					boolean inGame = false;
+
+					//check if the player is currently in a game
+					for(String arena: main.getConfig().getConfigurationSection("Arenas").getKeys(false)){
+
+						int arenaNum = data.getArenaNum(arena);
+						for(int count = 0; count < data.getArena(arenaNum).getGameCount(); count++){
+
+							if(data.getArena(arenaNum).getPlayer(count).equals(playerID)) {
+								inGame = true;
+							}
+
+						}
+
+					}
+
+					if(inGame == true) {
+						player.sendMessage(ChatColor.RED + "Sorry, you can't use this command while in a game");
+					} else {
+						KitShop shop = new KitShop();
+						shop.createCTFShop(player);
 					}
 
 					break;

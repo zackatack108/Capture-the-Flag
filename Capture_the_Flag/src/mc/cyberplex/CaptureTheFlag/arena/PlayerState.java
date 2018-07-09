@@ -2,8 +2,10 @@ package mc.cyberplex.CaptureTheFlag.arena;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffectType;
 
 import mc.cyberplex.CaptureTheFlag.Main;
 import mc.cyberplex.CaptureTheFlag.Scoreboards;
@@ -131,6 +133,16 @@ public class PlayerState {
 
 			//gives player an empty scoreboard
 			player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+			
+			player.setGameMode(GameMode.SURVIVAL);
+			player.removePotionEffect(PotionEffectType.INVISIBILITY);
+			player.removePotionEffect(PotionEffectType.SPEED);
+			player.removePotionEffect(PotionEffectType.REGENERATION);
+			player.removePotionEffect(PotionEffectType.HEAL);
+			player.removePotionEffect(PotionEffectType.JUMP);
+			player.removePotionEffect(PotionEffectType.HARM);
+			player.setHealth(20);
+			player.setFireTicks(0);
 
 			//teleport player to the hub
 			player.teleport(data.getHub());

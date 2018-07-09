@@ -26,6 +26,7 @@ public class CTFData {
 	private UUID hasRedFlag = null, hasBlueFlag = null;
 	private ArrayList<UUID> redTeam = new ArrayList<UUID>();
 	private ArrayList<UUID> blueTeam = new ArrayList<UUID>();
+	private ArrayList<String> playersKits = new ArrayList<String>();
 
 	boolean redTaken = false, blueTaken = false;
 
@@ -173,10 +174,11 @@ public class CTFData {
 	public void setBlueTaken(boolean taken){
 		blueTaken = taken;
 	}
-
-	//--------------------------------------------
-	//getters for class
-	//--------------------------------------------
+	
+	public void addToPlayersKits(String kit) {
+		playersKits.add(kit);	
+	}
+	
 	//---------------------------------------------------
 	//getters for class
 	//---------------------------------------------------
@@ -205,6 +207,24 @@ public class CTFData {
 
 	public int getBlueTeamCount(){
 		return blueTeam.size();
+	}
+	
+	public String getPlayersKits(int index) {
+		
+		if(playersKits.get(index) == null) {
+			return null;
+		} else {
+			return playersKits.get(index);
+		}
+		
+	}
+	
+	public String getPlayerKit(Player player) {
+		
+		if(main.getConfig().getString("Kits." + player.getUniqueId().toString()) == null) {
+			return null;
+		}		
+		return main.getConfig().getString("Kits." + player.getUniqueId().toString());		
 	}
 
 	public int getRedFlagSeconds(){

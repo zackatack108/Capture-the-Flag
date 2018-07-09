@@ -131,38 +131,41 @@ public class Scoreboards {
 
 	public void updateLobby(int arenaNum, Player player, String arenaName) {
 
-		Scoreboard board = player.getScoreboard();
+		if(player != null) {
+			Scoreboard board = player.getScoreboard();
 
-		if(board.getObjective(DisplaySlot.SIDEBAR) != null && board.getObjective(DisplaySlot.SIDEBAR).getDisplayName().equals(ChatColor.GOLD + "" + ChatColor.BOLD + "Capture The Flag")) {
+			if(board.getObjective(DisplaySlot.SIDEBAR) != null && board.getObjective(DisplaySlot.SIDEBAR).getDisplayName().equals(ChatColor.GOLD + "" + ChatColor.BOLD + "Capture The Flag")) {
 
-			board.getTeam("Player Count").setSuffix(ChatColor.WHITE + Integer.toString(data.getArena(arenaNum).getGameCount()));
-			board.getTeam("Time").setSuffix(ChatColor.WHITE + addPadding(2, Integer.toString(data.getArena(arenaNum).getMinutes())) + ":" + addPadding(2,Integer.toString(data.getArena(arenaNum).getSeconds())));
+				board.getTeam("Player Count").setSuffix(ChatColor.WHITE + Integer.toString(data.getArena(arenaNum).getGameCount()));
+				board.getTeam("Time").setSuffix(ChatColor.WHITE + addPadding(2, Integer.toString(data.getArena(arenaNum).getMinutes())) + ":" + addPadding(2,Integer.toString(data.getArena(arenaNum).getSeconds())));
 
-		} else {
+			} else {
 
-			lobbyBoard(arenaNum, player, arenaName);
+				lobbyBoard(arenaNum, player, arenaName);
 
+			}
 		}
 	}
 
 	public void updateGame(int arenaNum, Player player, String arenaName) {
 
-		Scoreboard board = player.getScoreboard();
+		if(player != null) {
+			Scoreboard board = player.getScoreboard();
 
-		if(board.getObjective(DisplaySlot.SIDEBAR) != null && board.getObjective(DisplaySlot.SIDEBAR).getDisplayName().equals(ChatColor.GOLD + "" + ChatColor.BOLD + "Capture The Flag")) {
+			if(board.getObjective(DisplaySlot.SIDEBAR) != null && board.getObjective(DisplaySlot.SIDEBAR).getDisplayName().equals(ChatColor.GOLD + "" + ChatColor.BOLD + "Capture The Flag")) {
 
-			board.getTeam("Red").setSuffix(ChatColor.WHITE + Integer.toString(data.getCTFData(arenaNum).getRedScore()));
-			board.getTeam("Red Flag Return").setSuffix(ChatColor.WHITE + addPadding(2, Integer.toString(data.getCTFData(arenaNum).getRedFlagMinutes())) + ":" + addPadding(2,Integer.toString(data.getCTFData(arenaNum).getRedFlagSeconds())));
-			board.getTeam("Blue").setSuffix(ChatColor.WHITE + Integer.toString(data.getCTFData(arenaNum).getBlueScore()));
-			board.getTeam("Blue Flag Return").setSuffix(ChatColor.WHITE + addPadding(2, Integer.toString(data.getCTFData(arenaNum).getBlueFlagMinutes())) + ":" + addPadding(2,Integer.toString(data.getCTFData(arenaNum).getBlueFlagSeconds())));
-			board.getTeam("Time").setSuffix(ChatColor.WHITE + addPadding(2,Integer.toString(data.getArena(arenaNum).getMinutes())) + ":" + addPadding(2,Integer.toString(data.getArena(arenaNum).getSeconds())));
+				board.getTeam("Red").setSuffix(ChatColor.WHITE + Integer.toString(data.getCTFData(arenaNum).getRedScore()));
+				board.getTeam("Red Flag Return").setSuffix(ChatColor.WHITE + addPadding(2, Integer.toString(data.getCTFData(arenaNum).getRedFlagMinutes())) + ":" + addPadding(2,Integer.toString(data.getCTFData(arenaNum).getRedFlagSeconds())));
+				board.getTeam("Blue").setSuffix(ChatColor.WHITE + Integer.toString(data.getCTFData(arenaNum).getBlueScore()));
+				board.getTeam("Blue Flag Return").setSuffix(ChatColor.WHITE + addPadding(2, Integer.toString(data.getCTFData(arenaNum).getBlueFlagMinutes())) + ":" + addPadding(2,Integer.toString(data.getCTFData(arenaNum).getBlueFlagSeconds())));
+				board.getTeam("Time").setSuffix(ChatColor.WHITE + addPadding(2,Integer.toString(data.getArena(arenaNum).getMinutes())) + ":" + addPadding(2,Integer.toString(data.getArena(arenaNum).getSeconds())));
 
-		} else {
+			} else {
 
-			gameBoard(arenaNum, player, arenaName);
+				gameBoard(arenaNum, player, arenaName);
 
+			}
 		}
-
 	}
 
 }
