@@ -1,13 +1,12 @@
 package mc.cyberplex.CaptureTheFlag.arena;
 
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Banner;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Rotatable;
 import org.bukkit.entity.Player;
-import org.bukkit.material.Directional;
-
 import mc.cyberplex.CaptureTheFlag.Main;
 
 public class FlagData {
@@ -68,55 +67,69 @@ public class FlagData {
 	//---------------------------------------------------
 	//getters for flag data
 	//---------------------------------------------------
-	public void getBlueFlag(String arenaName){
+	public void getBlueFlag(String arenaName){			
 
 		block = flag.blueFlagSpawn(arenaName).getBlock();
-		block.setType(Material.STANDING_BANNER);
-
-		banner = (Banner)block.getState();
+		block.setType(Material.BLUE_BANNER);
 		faceDirection(flag.yaw);
-		((Directional) banner.getData()).setFacingDirection(face);
-		banner.setBaseColor(DyeColor.BLUE);
-		banner.update();
+
+		BlockData bd = block.getBlockData();
+
+		if(bd instanceof Rotatable) {
+			Rotatable rot = (Rotatable) bd;
+			rot.setRotation(face);
+			block.setBlockData(rot);
+		}
 
 	}
 
 	public void getRedFlag(String arenaName){
 
 		block = flag.redFlagSpawn(arenaName).getBlock();
-		block.setType(Material.STANDING_BANNER);
-
-		banner = (Banner)block.getState();
+		block.setType(Material.RED_BANNER);
 		faceDirection(flag.yaw);
-		((Directional) banner.getData()).setFacingDirection(face);
-		banner.setBaseColor(DyeColor.RED);
-		banner.update();
+
+		BlockData bd = block.getBlockData();
+
+		if(bd instanceof Rotatable) {
+			Rotatable rot = (Rotatable) bd;
+			rot.setRotation(face);
+			block.setBlockData(rot);
+		}
 
 	}
 
 	public void getBlueDropped(String arenaName, Player player){
 
 		block = flag.blueDropped(arenaName, player).getBlock();
-		block.setType(Material.STANDING_BANNER);		
+		block.setType(Material.BLUE_BANNER);		
 
-		banner = (Banner)block.getState();
 		faceDirection(flag.yaw);
-		((Directional) banner.getData()).setFacingDirection(face);
-		banner.setBaseColor(DyeColor.BLUE);
-		banner.update();
+
+		BlockData bd = block.getBlockData();
+
+		if(bd instanceof Rotatable) {
+			Rotatable rot = (Rotatable) bd;
+			rot.setRotation(face);
+			block.setBlockData(rot);
+		}
 
 	}
 
 	public void getRedDropped(String arenaName, Player player){
 
 		block = flag.redDropped(arenaName, player).getBlock();
-		block.setType(Material.STANDING_BANNER);		
+		block.setType(Material.RED_BANNER);		
 
-		banner = (Banner)block.getState();
 		faceDirection(flag.yaw);
-		((Directional) banner.getData()).setFacingDirection(face);
-		banner.setBaseColor(DyeColor.RED);
-		banner.update();
+
+		BlockData bd = block.getBlockData();
+
+		if(bd instanceof Rotatable) {
+			Rotatable rot = (Rotatable) bd;
+			rot.setRotation(face);
+			block.setBlockData(rot);
+		}
 
 	}
 

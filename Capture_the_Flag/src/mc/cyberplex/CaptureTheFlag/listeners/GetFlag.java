@@ -86,7 +86,7 @@ public class GetFlag implements Listener{
 
 								if(banner.getBaseColor().equals(DyeColor.BLUE)) {
 
-									ItemStack blueFlag = new ItemStack(Material.BANNER);
+									ItemStack blueFlag = new ItemStack(Material.BLUE_BANNER);
 									blueFlag.setDurability((short) 4);
 
 									//create colored armor for red
@@ -147,7 +147,7 @@ public class GetFlag implements Listener{
 
 								if(banner.getBaseColor().equals(DyeColor.BLUE)) {
 
-									ItemStack blueFlag = new ItemStack(Material.BANNER);
+									ItemStack blueFlag = new ItemStack(Material.BLUE_BANNER);
 									blueFlag.setDurability((short) 4);								
 
 									//create colored armor for red
@@ -220,7 +220,7 @@ public class GetFlag implements Listener{
 
 								if(banner.getBaseColor().equals(DyeColor.RED)){
 
-									ItemStack redFlag = new ItemStack(Material.BANNER);
+									ItemStack redFlag = new ItemStack(Material.RED_BANNER);
 									redFlag.setDurability((short) 1);								
 
 									//create colored armor for blue
@@ -282,7 +282,7 @@ public class GetFlag implements Listener{
 
 								if(banner.getBaseColor().equals(DyeColor.RED)){
 
-									ItemStack redFlag = new ItemStack(Material.BANNER);
+									ItemStack redFlag = new ItemStack(Material.RED_BANNER);
 									redFlag.setDurability((short) 1);								
 
 									//create colored armor for blue

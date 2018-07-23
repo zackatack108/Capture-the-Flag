@@ -29,6 +29,7 @@ public class Scoreboards {
 		Team playerCount = board.registerNewTeam("Player Count");
 		Team time = board.registerNewTeam("Time");
 
+		@SuppressWarnings("deprecation")
 		Objective lobbyObjective = board.registerNewObjective("Lobby", "dummy");
 
 		lobbyObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
@@ -71,6 +72,7 @@ public class Scoreboards {
 		Team blueFlagReturn = board.registerNewTeam("Blue Flag Return");
 		Team time = board.registerNewTeam("Time");
 
+		@SuppressWarnings("deprecation")
 		Objective gameObjective = board.registerNewObjective("Game", "dummy");
 
 		gameObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
