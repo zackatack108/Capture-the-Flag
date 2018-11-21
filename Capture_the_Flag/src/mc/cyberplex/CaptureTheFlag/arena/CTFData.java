@@ -174,11 +174,54 @@ public class CTFData {
 	public void setBlueTaken(boolean taken){
 		blueTaken = taken;
 	}
-	
+
 	public void addToPlayersKits(String kit) {
 		playersKits.add(kit);	
 	}
-	
+
+	public void setPos1(String arenaName, Player player) {
+
+		//Create string for world
+		String world = player.getWorld().getName();
+
+		//Create variable for the locations the player is standing
+		double xPos = player.getLocation().getX(), 
+				zPos = player.getLocation().getZ();
+
+		//Save spawnpoint to config
+		main.getConfig().set("Arenas." + arenaName + ".pos1.world", world);
+		main.getConfig().set("Arenas." + arenaName + ".pos1.x", xPos);
+		main.getConfig().set("Arenas." + arenaName + ".pos1.z", zPos);
+		main.saveConfig();
+
+	}
+
+	public void setPos2(String arenaName, Player player) {
+
+		//Create string for world
+		String world = player.getWorld().getName();
+
+		//Create variable for the locations the player is standing
+		double xPos = player.getLocation().getX(), 
+				zPos = player.getLocation().getZ();
+
+		//Save spawnpoint to config
+		main.getConfig().set("Arenas." + arenaName + ".pos2.world", world);
+		main.getConfig().set("Arenas." + arenaName + ".pos2.x", xPos);
+		main.getConfig().set("Arenas." + arenaName + ".pos2.z", zPos);
+		main.saveConfig();
+
+	}
+
+	//---------------------------------------------------
+	//removers for class
+	//---------------------------------------------------
+	public void removeFromPlayerKits(int index) {
+		if(playersKits != null && playersKits.get(index) != null) {
+			playersKits.remove(index);
+		} 
+	}
+
 	//---------------------------------------------------
 	//getters for class
 	//---------------------------------------------------
@@ -208,19 +251,19 @@ public class CTFData {
 	public int getBlueTeamCount(){
 		return blueTeam.size();
 	}
-	
+
 	public String getPlayersKits(int index) {
-		
+
 		if(playersKits.get(index) == null) {
 			return null;
 		} else {
 			return playersKits.get(index);
 		}
-		
+
 	}
-	
+
 	public String getPlayerKit(Player player) {
-		
+
 		if(main.getConfig().getString("Kits." + player.getUniqueId().toString()) == null) {
 			return null;
 		}		
@@ -307,4 +350,62 @@ public class CTFData {
 
 	}
 
+	public Location getPos1(String arenaName) {
+
+		//get the pos1 coordinates from the config
+		String world = main.getConfig().getString("Arenas." + arenaName + ".pos1.world");
+		double xPos = main.getConfig().getDouble("Arenas." + arenaName + ".pos1.x"),
+				zPos = main.getConfig().getDouble("Arenas." + arenaName + ".pos1.z");
+
+		Location pos1 = new Location(Bukkit.getServer().getWorld(world), xPos, 0.0, zPos);
+
+		return pos1;
+
+	}
+
+	public Location getPos2(String arenaName) {
+
+		//get the pos2 coordinates from the config
+		String world = main.getConfig().getString("Arenas." + arenaName + ".pos2.world");
+		double xPos = main.getConfig().getDouble("Arenas." + arenaName + ".pos2.x"),
+				zPos = main.getConfig().getDouble("Arenas." + arenaName + ".pos2.z");
+
+		Location pos2 = new Location(Bukkit.getServer().getWorld(world), xPos, 0.0, zPos);
+
+		return pos2;
+
+	}
+
+	public boolean getInArenaArea(String arenaName, Player player) {
+
+		if(getPos1(arenaName) != null && getPos2(arenaName) != null) {
+			float pos1X = getPos1(arenaName).getBlockX(), 
+					pos1Z = getPos1(arenaName).getBlockZ();
+			float pos2X = getPos2(arenaName).getBlockX(), 
+					pos2Z = getPos2(arenaName).getBlockZ();
+
+			if(pos1X < pos2X) {
+				float temp = pos1X;
+				pos1X = pos2X;
+				pos2X = temp;
+			}
+
+			if(pos1Z < pos2Z) {
+				float temp = pos1Z;
+				pos1Z = pos2Z;
+				pos2Z = temp;
+			}
+
+			if((player.getLocation().getX() <= pos1X && player.getLocation().getX() >= pos2X) &&
+					(player.getLocation().getZ() <= pos1Z && player.getLocation().getZ() >= pos2Z)) {			
+				return true;			
+			} else {
+				return false;
+			}
+			
+		} else {
+			return false;
+		}
+
+	}
 }

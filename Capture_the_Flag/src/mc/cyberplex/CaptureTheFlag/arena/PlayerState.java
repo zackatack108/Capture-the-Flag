@@ -70,7 +70,7 @@ public class PlayerState {
 	public void leaveGame(String arenaName, Player player){
 
 		//get the state of the arena and who has the flags
-		String gameState = config.getString("Arenas." + arenaName + ".state");
+		String gameState = data.getState(arenaName);
 
 		//get the minimum number of players for arena
 		int minPlayers = data.getMinPlayers(arenaName);

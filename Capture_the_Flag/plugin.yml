@@ -1,6 +1,7 @@
 name: Capture_The_Flag
-version: 2.9
+version: 3.0
 main: mc.cyberplex.CaptureTheFlag.Main
+api-version: 1.13
 commands:
   ctf:
     description: Capture the flag base command.

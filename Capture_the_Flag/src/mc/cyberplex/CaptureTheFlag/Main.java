@@ -7,12 +7,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import mc.cyberplex.CaptureTheFlag.arena.Arena;
 import mc.cyberplex.CaptureTheFlag.arena.ArenaState;
 import mc.cyberplex.CaptureTheFlag.kits.KitListener;
-import mc.cyberplex.CaptureTheFlag.listeners.FallDamage;
+import mc.cyberplex.CaptureTheFlag.listeners.FlagBererDamage;
 import mc.cyberplex.CaptureTheFlag.listeners.FriendlyFire;
 import mc.cyberplex.CaptureTheFlag.listeners.GetFlag;
 import mc.cyberplex.CaptureTheFlag.listeners.Inventory;
 import mc.cyberplex.CaptureTheFlag.listeners.JoinSign;
 import mc.cyberplex.CaptureTheFlag.listeners.LeaveJoinMC;
+import mc.cyberplex.CaptureTheFlag.listeners.PlayerBreakBlock;
 import mc.cyberplex.CaptureTheFlag.listeners.PlayerDeath;
 import mc.cyberplex.CaptureTheFlag.listeners.PlayerScore;
 
@@ -48,9 +49,8 @@ public class Main extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new PlayerScore(), this);
 		getServer().getPluginManager().registerEvents(new JoinSign(), this);
 		getServer().getPluginManager().registerEvents(new KitListener(), this);
-		getServer().getPluginManager().registerEvents(new FallDamage(), this);
-		
-		
+		getServer().getPluginManager().registerEvents(new FlagBererDamage(), this);
+		getServer().getPluginManager().registerEvents(new PlayerBreakBlock(), this);		
 		
 	}
 

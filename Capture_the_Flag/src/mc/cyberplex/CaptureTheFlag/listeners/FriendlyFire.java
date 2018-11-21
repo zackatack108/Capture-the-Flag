@@ -122,6 +122,7 @@ public class FriendlyFire implements Listener {
 			
 			Player hitter = (Player) event.getDamager();
 			Player victim = (Player) event.getEntity();
+			String arena = null;
 
 			//cycle through arena list in the config
 			for(String arenaName : main.getConfig().getConfigurationSection("Arenas").getKeys(false)) {
@@ -134,6 +135,7 @@ public class FriendlyFire implements Listener {
 					//check if the attacker is in the game
 					if(hitter.getUniqueId().equals(data.getArena(arenaNum).getPlayer(subscript))) {
 						attackerInGame = true;
+						arena = arenaName;
 					}
 					
 					//check if the victim is in the game
@@ -178,6 +180,10 @@ public class FriendlyFire implements Listener {
 			
 			//check to see if the hitter and victim are both in game
 			if(attackerInGame == true && victimInGame == true) {
+				
+				if(data.getState(arena).equals("waiting for players")) {
+					event.setCancelled(true);
+				}
 				
 				//check if the hitter and victim are on red and cancel the event
 				if(attackerOnRed == true && victimOnRed == true) {

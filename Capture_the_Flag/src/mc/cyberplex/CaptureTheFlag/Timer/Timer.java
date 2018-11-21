@@ -193,6 +193,7 @@ public class Timer {
 						block.setType(Material.AIR);
 						flagData.getRedFlag(arenaName);
 						main.getConfig().set("Arenas." + arenaName + ".red.flag.dropped location", null);
+						main.saveConfig();
 
 						data.getCTFData(arenaNum).setFlagMsg(ChatColor.RED + "Red flag has returned to spawn");
 						playerList.getPlayer(arenaName, Message.FLAG);
@@ -266,6 +267,7 @@ public class Timer {
 						block.setType(Material.AIR);
 						flagData.getBlueFlag(arenaName);
 						main.getConfig().set("Arenas." + arenaName + ".blue.flag.dropped location", null);
+						main.saveConfig();
 
 						data.getCTFData(arenaNum).setFlagMsg(ChatColor.BLUE + "Blue flag has returned to spawn");
 						playerList.getPlayer(arenaName, Message.FLAG);	

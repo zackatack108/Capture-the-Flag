@@ -46,7 +46,7 @@ public class Arena {
 
 				Set<String> tempArenas = main.getConfig().getConfigurationSection("Arenas").getKeys(false);
 				String [] name = new String[tempArenas.size()];
-				
+
 				tempArenas.toArray(name);
 
 				for(int i = 0; i < tempArenas.size(); i++) {				
@@ -59,7 +59,7 @@ public class Arena {
 		}
 
 	}
-	
+
 	public void emptyArenaData(int index) {
 		arenaData.set(index, new Arena());
 		ctfData.set(index, new CTFData());
@@ -312,24 +312,24 @@ public class Arena {
 
 				spawnList.add(new SpawnData(world, x, y, z, yaw, pitch));
 			}
-			
+
 			//remove the spawn from the spawn list
 			spawnList.remove(num);
-			
+
 			//nuke all the spawns in the spawnlist to update the spawn numbers
 			main.getConfig().set("Arenas." + arenaName + ".spawn", null);
-			
+
 			//saves all the spawn data back to the config
 			for(int count = 0; count < spawnList.size(); count++) {
-				
+
 				String world = spawnList.get(count).world;
 				double x = spawnList.get(count).x,
 						y = spawnList.get(count).y,
 						z = spawnList.get(count).z,
 						yaw = spawnList.get(count).yaw,
 						pitch = spawnList.get(count).pitch;
-				
-				
+
+
 				//save spawnpoint to config
 				main.getConfig().set("Arenas." + arenaName + ".spawn." + count + ".world", world);
 				main.getConfig().set("Arenas." + arenaName + ".spawn." + count + ".x", x);
@@ -338,7 +338,7 @@ public class Arena {
 				main.getConfig().set("Arenas." + arenaName + ".spawn." + count + ".yaw", yaw);
 				main.getConfig().set("Arenas." + arenaName + ".spawn." + count + ".pitch", pitch);
 				main.saveConfig();
-				
+
 			}
 
 		}
@@ -402,9 +402,9 @@ public class Arena {
 
 		return arenaData.get(index);
 	}
-	
+
 	public CTFData getCTFData(int index) {
-		
+
 		if(index < 0 || index > arenaNames.size())
 			return null;
 		if(ctfData.size() <= index) {
@@ -412,7 +412,7 @@ public class Arena {
 		}
 
 		return ctfData.get(index);
-		
+
 	}
 
 	public int getArenaNum(String arenaName) {
@@ -566,15 +566,15 @@ public class Arena {
 
 		return shopCount;		
 	}
-	
+
 	public String getState(String arenaName) {
-		
+
 		if(arenaName != null && main.getConfig().contains("Arenas." + arenaName)) {
 			return main.getConfig().getString("Arenas." + arenaName + ".state");			
 		} else {
 			return null;
 		}
-		
+
 	}
 
 	//------------------------------------
@@ -586,25 +586,33 @@ public class Arena {
 
 	public static void saveInventory(Player player){
 
-		//get iventory and armor contents from player and save them to hashmap
-		inventoryContents.put(player.getUniqueId().toString(), player.getInventory().getContents());
-		armorContents.put(player.getUniqueId().toString(), player.getInventory().getArmorContents());
+		if(player != null) {
 
-		//clear player inventory
-		player.getInventory().clear();
+			//get iventory and armor contents from player and save them to hashmap
+			inventoryContents.put(player.getUniqueId().toString(), player.getInventory().getContents());
+			armorContents.put(player.getUniqueId().toString(), player.getInventory().getArmorContents());
+
+			//clear player inventory
+			player.getInventory().clear();
+
+		}
 
 	}
 
 	public static void returnInventory(Player player){
 
-		//clear player inventory
-		player.getInventory().clear();
+		if(player != null) {
+			
+			//clear player inventory
+			player.getInventory().clear();
 
-		//restore player inventory
-		if(inventoryContents.containsKey(player.getUniqueId().toString()) && armorContents.containsKey(player.getUniqueId().toString())){
+			//restore player inventory
+			if(inventoryContents.containsKey(player.getUniqueId().toString()) && armorContents.containsKey(player.getUniqueId().toString())){
 
-			player.getInventory().setContents(inventoryContents.get(player.getUniqueId().toString()));
-			player.getInventory().setArmorContents(armorContents.get(player.getUniqueId().toString()));
+				player.getInventory().setContents(inventoryContents.get(player.getUniqueId().toString()));
+				player.getInventory().setArmorContents(armorContents.get(player.getUniqueId().toString()));
+
+			}
 
 		}
 
